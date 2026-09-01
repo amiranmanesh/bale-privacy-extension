@@ -1,140 +1,196 @@
 /*
  * Bale Privacy — DOM probe
  * ---------------------------------------------------------------------------
- * Paste this whole file into the DevTools console of an open https://web.bale.ai
- * tab and run `baleProbe()`. It prints a structural map of the page that can be
- * used to write or repair the selectors in src/content/engine/selectors.ts.
+ * Paste this whole file into the DevTools console of an open
+ * https://web.bale.ai/chat tab. It reports what the extension can actually
+ * anchor on, and why a category is not blurring.
  *
- * It never reads message content: text is replaced by a length placeholder
- * before anything is printed or copied, so the output is safe to share.
+ *   bp.status()     is the extension injected, and which of its selectors are dead
+ *   bp.inventory()  every attribute the page renders, with value counts
+ *   bp.el($0)       ancestors + subtree of the element you inspected, redacted
+ *   bp.report()     status + inventory in one JSON blob
+ *   copy(bp.last)   put the last report on the clipboard
  *
- *   baleProbe()                       // summary + trees for the known regions
- *   baleProbe({ depth: 8 })           // deeper trees
- *   baleProbe({ selector: '.foo' })   // tree for a specific element
- *   copy(baleProbe.last)              // copy the JSON report to the clipboard
+ * No message content is ever printed: text is replaced by a «N chars»
+ * placeholder, image URLs are truncated, so the output is safe to share.
  */
 (() => {
-  const SENTRY_ATTRS = ['data-sentry-component', 'data-sentry-element', 'data-sentry-source-file'];
+  const STYLE_ID = 'bale-privacy-style';
+  const STATE_ATTR = 'data-bale-privacy';
+  const SKIP_ATTRS = new Set(['class', 'style']);
 
-  const REGIONS = {
-    sidebarRow: [
-      '[data-sentry-element="DialogItem"]',
-      '[data-sentry-source-file="DialogItemWrapper.tsx"]',
-    ],
-    messageList: [
-      '[data-sentry-component="MessagesListFC"]',
-      '[data-sentry-component="NewMessagesList"]',
-      '._message-item',
-    ],
-    messageBody: [
-      '[data-sentry-component="MessageContent"]',
-      '[data-sentry-element="TextMessage"]',
-    ],
-    header: ['[data-sentry-component="ToolbarFC"]', '[data-sentry-element="ToolbarContent"]'],
-    composer: ['[data-testid="message-text-area"]', '[contenteditable="true"]'],
-  };
-
-  /** Replaces any human-readable text with a shape-preserving placeholder. */
   const redact = (text) => {
     const trimmed = (text || '').trim();
-    if (!trimmed) return '';
-    return `«${trimmed.length} chars»`;
+    return trimmed ? `«${trimmed.length} chars»` : '';
+  };
+
+  /** Attributes are metadata, values may be content: redact the risky ones. */
+  const attrValue = (name, value) => {
+    if (name === 'src' || name === 'href' || name === 'xlink:href') {
+      return `${value.slice(0, 48)}${value.length > 48 ? '…' : ''}`;
+    }
+    if (name === 'alt' || name === 'title' || name.startsWith('aria-')) return redact(value);
+    return value.length > 64 ? `${value.slice(0, 64)}…` : value;
   };
 
   const describe = (element) => {
-    const parts = { tag: element.tagName.toLowerCase() };
-    for (const attr of SENTRY_ATTRS) {
-      const value = element.getAttribute(attr);
-      if (value) parts[attr.replace('data-sentry-', '')] = value;
+    const parts = [element.tagName.toLowerCase()];
+    if (element.id) parts.push(`#${element.id}`);
+    if (element.classList.length) parts.push(`.${[...element.classList].join('.')}`);
+    for (const attr of element.attributes) {
+      if (SKIP_ATTRS.has(attr.name)) continue;
+      if (attr.name === 'id') continue;
+      parts.push(`${attr.name}="${attrValue(attr.name, attr.value)}"`);
     }
-    for (const attr of ['data-testid', 'role', 'dir', 'aria-label', 'contenteditable']) {
-      const value = element.getAttribute(attr);
-      if (value) parts[attr] = attr === 'aria-label' ? redact(value) : value;
-    }
-    if (element.id) parts.id = element.id;
     const own = [...element.childNodes]
       .filter((node) => node.nodeType === Node.TEXT_NODE)
       .map((node) => node.textContent)
       .join('');
-    if (own.trim()) parts.text = redact(own);
-    if (element.tagName === 'IMG') parts.img = element.src.slice(0, 60);
+    if (own.trim()) parts.push(`text=${redact(own)}`);
     const box = element.getBoundingClientRect();
-    parts.box = `${Math.round(box.width)}x${Math.round(box.height)}`;
-    return parts;
+    parts.push(`box=${Math.round(box.width)}x${Math.round(box.height)}`);
+    return parts.join(' ');
   };
 
-  const tree = (element, depth, level = 0) => {
-    const node = { ...describe(element), depth: level, children: [] };
-    if (level < depth) {
-      for (const child of element.children) node.children.push(tree(child, depth, level + 1));
-    }
-    return node;
-  };
-
-  const printTree = (node, indent = '') => {
-    const { tag, children, depth: _depth, ...rest } = node;
-    const attrs = Object.entries(rest)
-      .map(([key, value]) => `${key}=${value}`)
-      .join(' ');
-    console.log(`${indent}${tag} ${attrs}`);
-    for (const child of children) printTree(child, `${indent}  `);
-  };
-
-  const countAttribute = (attribute) => {
-    const counts = new Map();
-    for (const element of document.querySelectorAll(`[${attribute}]`)) {
-      const value = element.getAttribute(attribute);
-      counts.set(value, (counts.get(value) || 0) + 1);
-    }
-    return Object.fromEntries([...counts].sort((a, b) => b[1] - a[1]));
-  };
-
-  const firstMatch = (selectors) => {
-    for (const selector of selectors) {
-      const element = document.querySelector(selector);
-      if (element) return { selector, element };
-    }
-    return null;
-  };
-
-  window.baleProbe = (options = {}) => {
-    const depth = options.depth ?? 5;
-    const report = {
-      url: location.href,
-      at: new Date().toISOString(),
-      attributes: {},
-      regions: {},
-    };
-
-    for (const attribute of [...SENTRY_ATTRS, 'data-testid']) {
-      report.attributes[attribute] = countAttribute(attribute);
-      console.log(
-        `%c${attribute}%c — ${Object.keys(report.attributes[attribute]).length} distinct values`,
-        'font-weight:bold',
-        '',
-      );
-    }
-
-    const entries = options.selector ? { custom: [options.selector] } : REGIONS;
-
-    for (const [name, selectors] of Object.entries(entries)) {
-      const found = firstMatch(selectors);
-      if (!found) {
-        console.warn(`· ${name}: no match for ${selectors.join(' | ')}`);
-        report.regions[name] = null;
-        continue;
+  const subtree = (element, depth, indent = '') => {
+    const lines = [`${indent}${describe(element)}`];
+    if (depth > 0) {
+      for (const child of element.children) {
+        lines.push(...subtree(child, depth - 1, `${indent}  `));
       }
-      console.group(`· ${name} — matched ${found.selector}`);
-      const node = tree(found.element, depth);
-      printTree(node);
-      console.groupEnd();
-      report.regions[name] = { selector: found.selector, tree: node };
     }
-
-    window.baleProbe.last = JSON.stringify(report, null, 2);
-    console.log('%cRun copy(baleProbe.last) to copy the redacted report.', 'color:#6366f1');
-    return report;
+    return lines;
   };
 
-  console.log('%cbaleProbe() is ready.', 'color:#6366f1;font-weight:bold');
+  const bp = {
+    last: '',
+
+    /** Which of the extension's own selectors are matching right now. */
+    status(limit = 40) {
+      const style = document.getElementById(STYLE_ID);
+      const state = document.documentElement.getAttribute(STATE_ATTR);
+      const result = {
+        injected: Boolean(style),
+        stateAttribute: state,
+        rules: 0,
+        dead: [],
+        alive: [],
+      };
+
+      console.log(`extension stylesheet present: ${result.injected}`);
+      console.log(`${STATE_ATTR} = ${state ?? '(absent)'}`);
+      if (!style) {
+        console.warn('The content script did not run. Reload the extension, then this tab.');
+        return result;
+      }
+
+      let rules = [];
+      try {
+        rules = [...style.sheet.cssRules];
+      } catch (error) {
+        console.warn('Could not read the stylesheet', error);
+        return result;
+      }
+      result.rules = rules.length;
+
+      const seen = new Set();
+      for (const rule of rules) {
+        for (const full of (rule.selectorText || '').split(',')) {
+          // Strip the html[data-bale-privacy~="…"] gate to get the page selector.
+          const selector = full.replace(/^\s*html(\[data-bale-privacy~="[^"]+"\])+\s*/, '').trim();
+          if (!selector || seen.has(selector)) continue;
+          seen.add(selector);
+          let count = 0;
+          try {
+            count = document.querySelectorAll(selector.replace(/:hover$/, '')).length;
+          } catch {
+            count = -1;
+          }
+          (count > 0 ? result.alive : result.dead).push({ selector, count });
+        }
+      }
+
+      console.log(
+        `%c${result.alive.length} selectors match, ${result.dead.length} match nothing`,
+        'font-weight:bold',
+      );
+      if (result.alive.length) console.table(result.alive.slice(0, limit));
+      console.log('dead selectors (first %d):', limit);
+      console.table(result.dead.slice(0, limit));
+      return result;
+    },
+
+    /** Every attribute the page actually renders, most common first. */
+    inventory(topValues = 12) {
+      const byName = new Map();
+      for (const element of document.querySelectorAll('*')) {
+        for (const attr of element.attributes) {
+          if (SKIP_ATTRS.has(attr.name)) continue;
+          if (!byName.has(attr.name)) byName.set(attr.name, { count: 0, values: new Map() });
+          const entry = byName.get(attr.name);
+          entry.count += 1;
+          entry.values.set(attr.value, (entry.values.get(attr.value) || 0) + 1);
+        }
+      }
+
+      const rows = [...byName.entries()]
+        .map(([name, entry]) => ({
+          attribute: name,
+          elements: entry.count,
+          distinct: entry.values.size,
+          top: [...entry.values.entries()]
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, topValues)
+            .map(([value, n]) => `${value.slice(0, 40)}(${n})`)
+            .join(', '),
+        }))
+        .sort((a, b) => b.elements - a.elements);
+
+      console.table(rows);
+      return rows;
+    },
+
+    /** Ancestors and subtree of an element — use bp.el($0) after inspecting one. */
+    el(element, { up = 8, depth = 4 } = {}) {
+      if (!element) {
+        console.warn('Inspect an element first (right-click → Inspect), then run bp.el($0)');
+        return null;
+      }
+      const chain = [];
+      let node = element.parentElement;
+      while (node && chain.length < up) {
+        chain.unshift(describe(node));
+        node = node.parentElement;
+      }
+      const lines = [
+        '── ancestors ──',
+        ...chain.map((line, i) => `${'  '.repeat(i)}${line}`),
+        '── element + subtree ──',
+        ...subtree(element, depth),
+      ];
+      console.log(lines.join('\n'));
+      bp.last = lines.join('\n');
+      return bp.last;
+    },
+
+    report() {
+      const payload = {
+        url: location.href,
+        at: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        status: bp.status(),
+        inventory: bp.inventory(),
+      };
+      bp.last = JSON.stringify(payload, null, 2);
+      console.log('%cRun copy(bp.last) to copy the report.', 'color:#6366f1');
+      return payload;
+    },
+  };
+
+  window.bp = bp;
+  console.log(
+    '%cbp ready.%c  bp.status() · bp.inventory() · bp.el($0) · bp.report()',
+    'color:#6366f1;font-weight:bold',
+    '',
+  );
 })();
