@@ -1,3 +1,4 @@
+import { STATE_TOKENS } from '../common/constants.js';
 import { loadSettings, onSettingsChanged } from '../common/storage.js';
 import { DEFAULT_SETTINGS } from '../common/settings.js';
 import type { Settings } from '../common/types.js';
@@ -5,6 +6,7 @@ import { ActivityWatcher } from './engine/activityWatcher.js';
 import { buildStylesheet, computeCssVars, computeStateTokens } from './engine/cssBuilder.js';
 import { logSelectorReport } from './engine/diagnostics.js';
 import { StyleController } from './engine/styleController.js';
+import { TooltipGuard } from './engine/tooltipGuard.js';
 
 /**
  * Content script entry point.
@@ -17,6 +19,7 @@ import { StyleController } from './engine/styleController.js';
  */
 
 const controller = new StyleController();
+const tooltipGuard = new TooltipGuard();
 
 let settings: Settings = DEFAULT_SETTINGS;
 let stylesheetSignature = '';
@@ -31,7 +34,13 @@ const watcher = new ActivityWatcher(
 );
 
 function render(): void {
-  controller.setTokens(computeStateTokens(settings, watcher.getState()));
+  const tokens = computeStateTokens(settings, watcher.getState());
+  controller.setTokens(tokens);
+  // Native tooltips are only a leak while something is blurred and hovering
+  // does not already reveal it.
+  tooltipGuard.setEnabled(
+    tokens.includes(STATE_TOKENS.active) && !tokens.includes(STATE_TOKENS.hover),
+  );
 }
 
 function apply(next: Settings): void {

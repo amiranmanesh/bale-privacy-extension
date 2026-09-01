@@ -23,6 +23,10 @@ All notable changes to this project are documented here. The format follows
 - `scripts/browser.mjs`, a driven Chromium with the built extension loaded and a
   persistent profile, used to verify selectors against a live session.
 
+- Native tooltips of chat rows are suppressed while blurring is on and
+  reveal-on-hover is off, so the browser cannot render the hidden preview text
+  outside the page.
+
 ### Fixed
 
 - Selectors now anchor on the attributes Bale actually renders (`aria-label`,

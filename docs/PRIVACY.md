@@ -43,6 +43,14 @@ There are no host permissions, no `tabs` permission and no `activeTab`
 permission. The popup and the options page communicate with open tabs purely
 through storage change events.
 
+## Page modifications
+
+Besides the stylesheet, the extension temporarily moves a chat row's `title`
+attribute aside while the pointer is over it — and only when blurring is on and
+reveal-on-hover is off — because the browser would otherwise render the hidden
+preview text as a native tooltip. The attribute is restored as soon as the
+setting changes or the extension is removed.
+
 ## Diagnostics
 
 The optional _Log selector diagnostics_ setting prints how many elements each

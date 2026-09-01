@@ -113,6 +113,20 @@ next to it, so the two switches genuinely act on their own.
 `:has()` sets the browser baseline: Chromium 111 and Firefox 121, both declared
 in the generated manifests.
 
+### The one thing CSS cannot reach
+
+Bale puts the full last-message preview into a `title` attribute on the chat
+row, and the browser renders that as a native tooltip — outside the page, where
+no stylesheet can touch it. With reveal-on-hover enabled it does not matter,
+since hovering reveals the row anyway; with it disabled the tooltip would hand
+over exactly the text the user asked to hide.
+
+`TooltipGuard` closes that hole with one delegated `pointerover` listener, armed
+only while blurring is active _and_ hover reveal is off. It moves the attribute
+aside the first time the pointer reaches a titled row, and restores everything
+by querying the DOM when it is switched off — so a tooltip is put back even if
+the instance that stashed it is gone.
+
 ### Forced blur
 
 `computeStateTokens()` treats "window lost focus" and "user is idle" as
