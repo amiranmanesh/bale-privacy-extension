@@ -82,8 +82,8 @@ This is an independent project. It is not affiliated with, endorsed by, or conne
 Bale.
 ```
 
-**This add-on is experimental:** unchecked. The release is 0.1.0, but the feature set is
-complete and the add-on is not a proof of concept; ticking the box hides it from search.
+**This add-on is experimental:** unchecked. The feature set is complete and every
+engine has been exercised on a live session; ticking the box hides it from search.
 
 **Requires payment / non-free services / additional hardware:** unchecked.
 

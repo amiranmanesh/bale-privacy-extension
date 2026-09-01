@@ -1,6 +1,6 @@
 {
   "name": "bale-privacy",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Blur chats, previews, media and avatars on Bale Web (web.bale.ai) until you need them.",

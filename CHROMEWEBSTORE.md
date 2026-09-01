@@ -192,9 +192,10 @@ https://amiranmanesh.github.io/bale-privacy-extension/privacy.html
 
 ## Version history
 
-| Version | Date | Changes                                                                                                                                                   | Status |
-| ------- | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 0.1.0   | —    | First release: nine blur categories, hover and hold-to-reveal, auto-blur on focus loss and idle, keyboard shortcut, custom selectors, English and Persian | Draft  |
+| Version | Date       | Changes                                                                                                                                                   | Status     |
+| ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 0.1.0   | 2026-09-01 | First release: nine blur categories, hover and hold-to-reveal, auto-blur on focus loss and idle, keyboard shortcut, custom selectors, English and Persian | Superseded |
+| 1.0.0   | 2026-09-01 | Adds Firefox for Android and a Safari target; every engine verified on a live logged-in session                                                           | Draft      |
 
 ## Review notes
 
