@@ -18,9 +18,6 @@ if (!api) {
 
 export const ext: WebExt.Api = api;
 
-/** True when running inside an extension context (as opposed to a unit test). */
-export const hasExtensionContext = (): boolean => Boolean(ext.runtime?.id);
-
 /**
  * Localised string with a safe fallback, so the UI never renders raw
  * `__MSG_key__` placeholders if a locale file is missing an entry.

@@ -21,7 +21,7 @@ export const collectSelectorReport = (
   const report: SelectorReport[] = [];
   for (const definition of TARGET_DEFINITIONS) {
     for (const selector of selectorsForTarget(definition, settings.customSelectors)) {
-      let matches = 0;
+      let matches: number;
       try {
         matches = root.querySelectorAll(selector).length;
       } catch {

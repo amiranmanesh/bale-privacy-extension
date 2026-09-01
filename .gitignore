@@ -11,3 +11,6 @@ coverage/
 web-ext-artifacts/
 .browser-profile/
 probe-out/
+
+# Skill packs vendored by tooling; not this project's source.
+.agents/

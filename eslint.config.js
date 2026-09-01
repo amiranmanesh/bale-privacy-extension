@@ -41,4 +41,11 @@ export default tseslint.config(
     files: ['tests/**/*.ts'],
     languageOptions: { globals: { ...globals.node } },
   },
+  {
+    // Console snippets pasted into a Bale tab: browser globals, and they are
+    // written to be read and edited in DevTools rather than bundled.
+    files: ['tools/**/*.js'],
+    languageOptions: { globals: { ...globals.browser } },
+    rules: { 'no-console': 'off' },
+  },
 );
