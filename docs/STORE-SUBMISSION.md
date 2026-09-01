@@ -31,6 +31,15 @@ release/bale-privacy-<version>-firefox.zip
   a fabricated conversation, so no real account or message is ever published.
 - **Remote code:** answer _No_. Everything is bundled; nothing is fetched.
 
+## Packaging
+
+Always build the archives with `npm run package`. It zips from _inside_
+`dist/<target>/`, so `manifest.json` lands at the archive root, and it drops
+dotfiles; the build then fails if either invariant is broken. Compressing the
+`dist/firefox` folder in Finder instead produces an archive AMO rejects with
+`No manifest.json was found at the root of the extension`, plus one "hidden
+file flagged" warning per `__MACOSX/._*` resource fork.
+
 ## Firefox Add-ons (AMO)
 
 - The add-on id is pinned in `scripts/manifest.mjs` and must not change between

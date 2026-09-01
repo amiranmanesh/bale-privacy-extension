@@ -47,8 +47,14 @@ const STATIC_FILES = [
   { from: 'src/ui/options/options.css', to: 'options.css' },
   { from: 'src/ui/shared.css', to: 'shared.css' },
   { from: 'public/_locales', to: '_locales' },
-  { from: 'public/icons', to: 'icons' },
 ];
+
+/**
+ * Only the sizes the manifest references. public/icons also holds 256 and 512
+ * for the website and the store listing; shipping them would add ~48 KB of dead
+ * weight to every package.
+ */
+const ICON_SIZES = [16, 32, 48, 128];
 
 async function ensureIcons() {
   if (existsSync(resolve('public/icons/icon-128.png'))) return;
@@ -81,6 +87,11 @@ async function buildTarget(target) {
     await cp(resolve(file.from), path.join(outdir, file.to), { recursive: true });
   }
 
+  await mkdir(path.join(outdir, 'icons'), { recursive: true });
+  for (const size of ICON_SIZES) {
+    await cp(resolve(`public/icons/icon-${size}.png`), path.join(outdir, `icons/icon-${size}.png`));
+  }
+
   const pkg = JSON.parse(await readFile(resolve('package.json'), 'utf8'));
   await writeFile(
     path.join(outdir, 'manifest.json'),
@@ -91,14 +102,37 @@ async function buildTarget(target) {
   return { context, outdir };
 }
 
-/** Zips without a dependency by shelling out to the system `zip`. */
+/**
+ * Zips without a dependency by shelling out to the system `zip`.
+ *
+ * The store validators reject an archive that nests the extension in a folder
+ * and warn about every dotfile in it, so the archive is built from inside
+ * `dist/<target>` with `-X` (no extra attributes, no `__MACOSX/`) and dotfiles
+ * excluded. Never repackage a build with Finder's "Compress" — it does both of
+ * the things this guards against.
+ */
 async function zipTarget(target, version) {
   const releaseDir = resolve('release');
   await mkdir(releaseDir, { recursive: true });
   const archive = path.join(releaseDir, `bale-privacy-${version}-${target}.zip`);
   await rm(archive, { force: true });
-  await execFileAsync('zip', ['-r', '-q', '-X', archive, '.'], { cwd: resolve('dist', target) });
+  const cwd = resolve('dist', target);
+  await execFileAsync('zip', ['-r', '-q', '-X', archive, '.', '-x', '.*', '*/.*'], { cwd });
+  await assertPackagedForStores(archive);
   console.log(`✓ ${target} → ${path.relative(root, archive)}`);
+}
+
+/** Fails the build rather than shipping an archive a store would reject. */
+async function assertPackagedForStores(archive) {
+  const { stdout } = await execFileAsync('unzip', ['-Z1', archive]);
+  const entries = stdout.split('\n').filter(Boolean);
+  if (!entries.includes('manifest.json')) {
+    throw new Error(`${path.basename(archive)}: manifest.json is not at the archive root`);
+  }
+  const hidden = entries.filter((entry) => entry.split('/').some((part) => part.startsWith('.')));
+  if (hidden.length > 0) {
+    throw new Error(`${path.basename(archive)}: hidden files in the archive: ${hidden.join(', ')}`);
+  }
 }
 
 async function main() {

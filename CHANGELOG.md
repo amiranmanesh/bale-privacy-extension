@@ -27,6 +27,13 @@ All notable changes to this project are documented here. The format follows
   reveal-on-hover is off, so the browser cannot render the hidden preview text
   outside the page.
 
+- Project website and hosted privacy policy, published to GitHub Pages from `site/`.
+- `CHROMEWEBSTORE.md` with the full store listing, permission justifications and
+  data-use answers, and `scripts/screenshots.mjs`, which renders store screenshots from
+  a fabricated conversation so no real data is ever published.
+- Issue forms for dead selectors, leaks, bugs and feature requests, plus SUPPORT.md and
+  a code of conduct.
+
 ### Fixed
 
 - Selectors now anchor on the attributes Bale actually renders (`aria-label`,
@@ -34,3 +41,8 @@ All notable changes to this project are documented here. The format follows
   set was derived from the bundle alone and matched nothing.
 - Settings controls opt out of browser form restoration; without that, reopening
   the options page could write stale form values back over saved settings.
+- Packages ship only the four icon sizes the manifest references, instead of the whole
+  icon set.
+- The privacy claim is now precise: the extension makes no network requests, but
+  settings live in `storage.sync`, which the browser roams between the user's own
+  devices when sync is enabled.
