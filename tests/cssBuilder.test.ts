@@ -36,7 +36,9 @@ describe('buildStylesheet', () => {
   const css = buildStylesheet({}, [definition]);
 
   it('gates every rule on the active token and the target token', () => {
-    expect(css).toContain(`html[${STATE_ATTRIBUTE}~="active"][${STATE_ATTRIBUTE}~="messageText"] .bubble`);
+    expect(css).toContain(
+      `html[${STATE_ATTRIBUTE}~="active"][${STATE_ATTRIBUTE}~="messageText"] .bubble`,
+    );
   });
 
   it('blurs with the text radius for a text target', () => {
@@ -92,10 +94,11 @@ describe('computeStateTokens', () => {
   });
 
   it('suppresses hover and peek while blur is forced', () => {
-    const tokens = computeStateTokens(
-      settings({ blurOnIdle: true, holdKeyReveal: true }),
-      { ...DEFAULT_RUNTIME_STATE, idle: true, peeking: true },
-    );
+    const tokens = computeStateTokens(settings({ blurOnIdle: true, holdKeyReveal: true }), {
+      ...DEFAULT_RUNTIME_STATE,
+      idle: true,
+      peeking: true,
+    });
     expect(tokens).not.toContain('hover');
     expect(tokens).not.toContain('peek');
   });

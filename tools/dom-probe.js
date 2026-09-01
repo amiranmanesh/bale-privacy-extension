@@ -99,7 +99,12 @@
 
   window.baleProbe = (options = {}) => {
     const depth = options.depth ?? 5;
-    const report = { url: location.href, at: new Date().toISOString(), attributes: {}, regions: {} };
+    const report = {
+      url: location.href,
+      at: new Date().toISOString(),
+      attributes: {},
+      regions: {},
+    };
 
     for (const attribute of [...SENTRY_ATTRS, 'data-testid']) {
       report.attributes[attribute] = countAttribute(attribute);
@@ -110,9 +115,7 @@
       );
     }
 
-    const entries = options.selector
-      ? { custom: [options.selector] }
-      : REGIONS;
+    const entries = options.selector ? { custom: [options.selector] } : REGIONS;
 
     for (const [name, selectors] of Object.entries(entries)) {
       const found = firstMatch(selectors);

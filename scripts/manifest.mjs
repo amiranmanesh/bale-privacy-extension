@@ -24,6 +24,10 @@ const ICONS = {
  * Both stores get Manifest V3, but the two engines disagree on one field:
  * Chrome runs the background as a service worker, Firefox as an event page
  * script list. Everything else is shared.
+ *
+ * @param {string} target one of {@link TARGETS}
+ * @param {string} [version] defaults to the version in package.json
+ * @returns {Record<string, any>} the manifest to write next to the bundles
  */
 export function buildManifest(target, version = pkg.version) {
   const manifest = {

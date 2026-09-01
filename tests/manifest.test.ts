@@ -4,7 +4,7 @@ import hosts from '../src/manifest/hosts.json';
 import { BALE_MATCHES, TOGGLE_COMMAND } from '../src/common/constants.js';
 
 describe('buildManifest', () => {
-  it.each(TARGETS)('produces a valid MV3 manifest for %s', (target) => {
+  it.each([...TARGETS])('produces a valid MV3 manifest for %s', (target: string) => {
     const manifest = buildManifest(target, '1.2.3');
     expect(manifest.manifest_version).toBe(3);
     expect(manifest.version).toBe('1.2.3');

@@ -33,8 +33,7 @@ import type { TargetDefinition } from '../../common/types.js';
  * `:has()` is kept last so the selector also parses in engines that only
  * support it at the end of a compound (notably jsdom, which the tests use).
  */
-const LEAF =
-  '*:not(:empty, img, svg, canvas, video, input, textarea, br):not(:has(*))';
+const LEAF = '*:not(:empty, img, svg, canvas, video, input, textarea, br):not(:has(*))';
 
 /** Elements that render a picture, wherever they appear. */
 const GRAPHIC = ['img', 'canvas', 'video', 'svg[width]'] as const;
