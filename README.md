@@ -56,6 +56,18 @@ endorsed by, or connected to Bale.
 > **فارسی:** راهنمای کامل فارسی در [README.fa.md](README.fa.md) و در
 > [صفحهٔ فارسی سایت](https://amiranmanesh.github.io/bale-privacy-extension/fa/) هست.
 
+### Which browsers
+
+| Browser                                         | Package                                                                                                         |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Chrome, Edge, Brave, Opera, Vivaldi, Arc (111+) | `…-chrome.zip` — one package for every Chromium browser                                                         |
+| Firefox 121+, Firefox for Android               | `…-firefox.zip`                                                                                                 |
+| Safari 16.4+ on macOS                           | built from the same source with `npm run build:safari`; needs Xcode and, to publish, an Apple Developer account |
+
+Chromium browsers do not need separate builds — only separate store listings.
+Details and what has actually been verified on each engine:
+[docs/BROWSER-SUPPORT.md](docs/BROWSER-SUPPORT.md).
+
 ### From the stores
 
 Not published yet — links appear here and on the [website](https://amiranmanesh.github.io/bale-privacy-extension) once the first
