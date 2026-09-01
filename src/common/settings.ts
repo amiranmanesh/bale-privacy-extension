@@ -53,11 +53,15 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 /**
  * A custom selector is user input that ends up inside a generated stylesheet.
- * Reject anything that could terminate the rule or smuggle in extra CSS.
+ *
+ * Braces, semicolons, at-rules and comment markers could terminate the rule and
+ * smuggle in extra CSS. Commas are rejected too: every custom selector is
+ * prefixed with the extension's state gate, and a comma would let the second
+ * half escape that prefix and apply to the whole page.
  */
 export const isSafeSelector = (selector: string): boolean => {
   if (selector.length === 0 || selector.length > LIMITS.customSelectorLength) return false;
-  if (/[{}<>;@\\]/.test(selector)) return false;
+  if (/[{}<;@,\\]/.test(selector)) return false;
   if (selector.includes('/*') || selector.includes('*/')) return false;
   return true;
 };

@@ -28,9 +28,13 @@ import type { TargetDefinition } from '../../common/types.js';
  * See docs/SELECTORS.md for how to re-derive this list against a new build.
  */
 
-/** Leaf elements that carry text: no element children, not empty, not media. */
+/**
+ * Leaf elements that carry text: no element children, not empty, not media.
+ * `:has()` is kept last so the selector also parses in engines that only
+ * support it at the end of a compound (notably jsdom, which the tests use).
+ */
 const LEAF =
-  '*:not(:has(*)):not(:empty):not(img):not(svg):not(canvas):not(video):not(input):not(textarea):not(br)';
+  '*:not(:empty, img, svg, canvas, video, input, textarea, br):not(:has(*))';
 
 /** Elements that render a picture, wherever they appear. */
 const GRAPHIC = ['img', 'canvas', 'video', 'svg[width]'] as const;
