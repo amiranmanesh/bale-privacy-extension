@@ -14,3 +14,4 @@ probe-out/
 
 # Skill packs vendored by tooling; not this project's source.
 .agents/
+safari/

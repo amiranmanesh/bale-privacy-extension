@@ -14,6 +14,7 @@
     "build": "node scripts/build.mjs",
     "build:chrome": "node scripts/build.mjs --target chrome",
     "build:firefox": "node scripts/build.mjs --target firefox",
+    "build:safari": "node scripts/safari.mjs",
     "dev": "node scripts/build.mjs --target chrome --watch",
     "dev:firefox": "node scripts/build.mjs --target firefox --watch",
     "package": "node scripts/build.mjs --zip",
