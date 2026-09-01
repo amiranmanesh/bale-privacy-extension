@@ -44,7 +44,9 @@ const asBoolean = (value: unknown, fallback: boolean): boolean =>
   typeof value === 'boolean' ? value : fallback;
 
 const asNumber = (value: unknown, fallback: number, min: number, max: number): number =>
-  typeof value === 'number' && Number.isFinite(value) ? clamp(Math.round(value), min, max) : fallback;
+  typeof value === 'number' && Number.isFinite(value)
+    ? clamp(Math.round(value), min, max)
+    : fallback;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);

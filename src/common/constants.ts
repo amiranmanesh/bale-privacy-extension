@@ -1,3 +1,5 @@
+import hosts from '../manifest/hosts.json';
+
 /** Storage key holding the whole settings object. */
 export const SETTINGS_KEY = 'settings';
 
@@ -27,8 +29,11 @@ export const STATE_TOKENS = {
   animate: 'animate',
 } as const;
 
-/** Hosts the content script is allowed to run on. */
-export const BALE_MATCHES = ['https://web.bale.ai/*', 'https://web.bale.ir/*'] as const;
+/**
+ * Hosts the content script is allowed to run on.
+ * Single source of truth, also read by scripts/manifest.mjs at build time.
+ */
+export const BALE_MATCHES: readonly string[] = hosts.matches;
 
 /** Command id registered in the manifest for the global keyboard shortcut. */
 export const TOGGLE_COMMAND = 'toggle-privacy';

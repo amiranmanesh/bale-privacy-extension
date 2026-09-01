@@ -66,7 +66,9 @@ export const buildStylesheet = (
     // Smooth fade, opt-in so that "instant" stays truly instant.
     chunks.push(
       rule(
-        selectors.map((selector) => `${ACTIVE}${attr(STATE_TOKENS.animate)}${attr(definition.id)} ${selector}`),
+        selectors.map(
+          (selector) => `${ACTIVE}${attr(STATE_TOKENS.animate)}${attr(definition.id)} ${selector}`,
+        ),
         `  transition: filter var(${CSS_VARS.transition}) ease !important;`,
       ),
     );

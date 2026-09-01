@@ -142,9 +142,10 @@ export const TARGET_DEFINITIONS: TargetDefinition[] = [
     labelKey: 'target_messageAvatars',
     kind: 'graphic',
     selectors: [
-      ...within(['[data-sentry-component="GroupPeerFC"]', '[data-sentry-element="AvatarItem"]'], [
-        ...GRAPHIC,
-      ]),
+      ...within(
+        ['[data-sentry-component="GroupPeerFC"]', '[data-sentry-element="AvatarItem"]'],
+        [...GRAPHIC],
+      ),
       '[data-sentry-component="SeenerList"] img',
     ],
   },
