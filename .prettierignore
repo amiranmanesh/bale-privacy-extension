@@ -3,3 +3,8 @@ release/
 coverage/
 node_modules/
 public/icons/
+
+# Skill packs vendored by tooling; not this project's source.
+.agents/
+probe-out/
+.browser-profile/

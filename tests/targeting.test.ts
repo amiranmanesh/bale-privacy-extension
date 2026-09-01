@@ -29,6 +29,14 @@ const FIXTURE = `
     </div>
   </div>
 
+  <div dir="rtl" title="archived chats">
+    <div data-sentry-component="ArchiveAvatar"><div aria-label="avatar"></div></div>
+    <div>
+      <div><bdi id="archive-label">Archive</bdi></div>
+      <div><span id="archive-preview">Weekend trip</span></div>
+    </div>
+  </div>
+
   <div aria-label="message-item" data-sid="client-message:1" data-date="1">
     <div>
       <div><div id="msg-avatar" aria-label="avatar"><span>A</span></div></div>
@@ -84,13 +92,20 @@ beforeEach(() => {
 
 describe('chat list', () => {
   it('blurs the chat name and the message preview', () => {
-    expect(matches('sidebarText')).toEqual(['row-name', 'row-preview']);
+    // The archive subtitle belongs to the same switch; see its own test below.
+    expect(matches('sidebarText')).toEqual(['archive-preview', 'row-name', 'row-preview']);
   });
 
   it('leaves the timestamp and the unread badge readable', () => {
     const blurred = matches('sidebarText');
     expect(blurred).not.toContain('row-time');
     expect(blurred).not.toContain('row-badge');
+  });
+
+  it('blurs the archive subtitle but keeps the word "Archive" findable', () => {
+    const blurred = matches('sidebarText');
+    expect(blurred).toContain('archive-preview');
+    expect(blurred).not.toContain('archive-label');
   });
 
   it('blurs the row avatar under its own switch', () => {

@@ -54,7 +54,10 @@ export const TARGET_DEFINITIONS: TargetDefinition[] = [
       // The archive row is not a dialog-item: it sits above the list and its
       // subtitle names the conversations inside it. Its own <bdi> is the
       // literal word "Archive", so that stays readable and the entry findable.
-      '[dir]:has(> [data-sentry-component="ArchiveAvatar"]) span',
+      // The `div` before the attribute is not decoration: some selector
+      // engines (nwsapi, which jsdom and therefore the test suite use) fail to
+      // parse an attribute selector as the first thing inside `:has(> …)`.
+      '[dir]:has(> div[data-sentry-component="ArchiveAvatar"]) span',
     ],
   },
   {

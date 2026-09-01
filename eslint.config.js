@@ -10,6 +10,8 @@ export default tseslint.config(
       'coverage/**',
       'node_modules/**',
       // Scratch snippets evaluated inside a page, and the driven browser's profile.
+      // Skill packs vendored by tooling; not this project's source.
+      '.agents/**',
       'probe-out/**',
       '.browser-profile/**',
       'tools/dom-probe.js',
