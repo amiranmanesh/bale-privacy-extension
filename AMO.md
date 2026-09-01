@@ -24,7 +24,7 @@ privacy-for-bale-web
 **Summary** (250 char limit — 106 used)
 
 ```
-Blur chats, previews, media and avatars on Bale Web until you hover them. Everything stays on your device.
+Blurs chats, previews, messages, media and profile pictures on Bale Web until you hover them. No data collection.
 ```
 
 **Description**

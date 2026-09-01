@@ -14,11 +14,14 @@ rather than improvisation. Keep this file in sync with `manifest.json` and
 Privacy for Bale Web
 ```
 
-**Short description** (132 char limit — 106 used)
+**Short description** (132 character limit — 113 used)
 
 ```
-Blurs chats, previews, messages, media and profile pictures on Bale Web until you hover them.
+Blurs chats, previews, messages, media and profile pictures on Bale Web until you hover them. No data collection.
 ```
+
+The same string is the extension's `description` in the manifest, so the two can never
+disagree. A test asserts every locale stays inside the limit.
 
 **Category:** Privacy & Security
 **Primary language:** English (listing also supplied in Persian)

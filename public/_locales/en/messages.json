@@ -4,7 +4,7 @@
     "description": "Extension name shown in the browser and stores."
   },
   "extension_description": {
-    "message": "Blur chats, previews, media and avatars on Bale Web until you hover them. Everything stays on your device.",
+    "message": "Blurs chats, previews, messages, media and profile pictures on Bale Web until you hover them. No data collection.",
     "description": "Store listing description."
   },
   "action_title": {

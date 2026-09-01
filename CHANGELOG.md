@@ -6,6 +6,19 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-09-01
+
+### Fixed
+
+- The Persian store description was 147 characters, past the Chrome Web Store's
+  132-character limit — it would have been truncated or rejected at submission. Both
+  descriptions are shorter now.
+- Both also said "everything stays on your device", which is imprecise: the extension
+  makes no network requests, but the browser roams settings between a user's own devices
+  when sync is on. They now say "no data collection", which is exactly true.
+- A test enforces the store's name and description limits, and locale parity, for every
+  language.
+
 ## [0.1.0] — 2026-09-01
 
 First release. Chrome and Firefox packages built from one source tree.
@@ -46,5 +59,6 @@ First release. Chrome and Firefox packages built from one source tree.
   against a live logged-in session, because Bale's CSS Module class names are per-build
   hashes.
 
-[unreleased]: https://github.com/amiranmanesh/bale-privacy-extension/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/amiranmanesh/bale-privacy-extension/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/amiranmanesh/bale-privacy-extension/releases/tag/v0.1.1
 [0.1.0]: https://github.com/amiranmanesh/bale-privacy-extension/releases/tag/v0.1.0
