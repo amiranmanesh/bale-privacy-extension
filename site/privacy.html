@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy policy — Privacy for Bale Web</title>
+    <meta
+      name="description"
+      content="Privacy policy for the Privacy for Bale Web browser extension."
+    />
+    <link rel="icon" href="assets/icon-128.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <img src="assets/icon-128.png" alt="" width="30" height="30" />
+        <span class="brand"
+          ><a href="index.html" style="text-decoration: none; color: inherit"
+            >Privacy for Bale Web</a
+          ></span
+        >
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap doc">
+      <h1>Privacy policy</h1>
+      <p><em>Extension: Privacy for Bale Web · Last updated: 1 September 2026</em></p>
+
+      <p>
+        <strong>This extension does not collect, transmit, sell or share any personal data.</strong>
+        It has no server, no analytics and makes no network requests of any kind.
+      </p>
+
+      <h2>What the extension does</h2>
+      <p>
+        It adds a stylesheet to <code>https://web.bale.ai</code> that visually blurs parts of the
+        page — chat names, message previews and text, photos, and profile pictures — until you hover
+        them or switch the blur off. It also stores your preferences.
+      </p>
+      <p>
+        The blur is purely visual. The extension does not read, parse, copy, log or transmit your
+        messages, contacts, media or account details, and it does not need to in order to blur them.
+      </p>
+
+      <h2>What is stored</h2>
+      <p>
+        One settings object: which categories are blurred, the blur strength, the reveal and
+        automatic-blur options, and any custom CSS selectors you add on the options page. Nothing
+        else. No message content, no identifiers, no usage statistics.
+      </p>
+      <p>
+        Settings are saved with your browser's extension storage. If you are signed into your
+        browser with sync enabled, your browser — Google Chrome or Mozilla Firefox — synchronises
+        that settings object between your own devices, exactly as it does for any other extension
+        setting. That transfer is between you and your browser vendor; the settings are never sent
+        to the authors of this extension or to any third party, because there is nowhere for them to
+        be sent. If sync is unavailable, settings are kept locally instead.
+      </p>
+
+      <h2>Data use disclosure</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Collected</th>
+            <th>Sent off device</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Personally identifiable information</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Health information</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Financial and payment information</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Authentication information</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Personal communications</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Location</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Web history</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>User activity</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Website content</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The extension's own settings are user preferences, not user data collected by the developer.
+        They are not sold to third parties, not used for any purpose unrelated to the extension's
+        single function, and not used for creditworthiness or lending.
+      </p>
+
+      <h2>Permissions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Permission</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>storage</code></td>
+            <td>
+              Saves your blur preferences and lets every open Bale tab react when you change one.
+            </td>
+          </tr>
+          <tr>
+            <td>Content script on <code>https://web.bale.ai/*</code></td>
+            <td>
+              The single site the extension modifies; the stylesheet that performs the blur is added
+              there.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        There are no host permissions, no <code>tabs</code> permission and no
+        <code>activeTab</code> permission. The popup and options page reach open tabs only through
+        storage change events, so the extension never gains the ability to read your tabs or
+        browsing history.
+      </p>
+
+      <h2>Page modifications</h2>
+      <p>
+        Besides the stylesheet, the extension temporarily moves a chat row's tooltip text aside
+        while the pointer is over it — and only while blurring is on and reveal-on-hover is off —
+        because the browser would otherwise display the hidden preview as a native tooltip. The text
+        is restored as soon as the setting changes or the extension is removed.
+      </p>
+
+      <h2>Diagnostics</h2>
+      <p>
+        An optional setting prints how many page elements each of the extension's selectors matches
+        to your own browser console. It prints counts, never content, and nothing leaves your
+        machine.
+      </p>
+
+      <h2>Children</h2>
+      <p>The extension is not directed at children and collects no data from anyone.</p>
+
+      <h2>Changes</h2>
+      <p>
+        Any change to this policy is published on this page and in the project's public repository,
+        with the date above updated.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions or reports:
+        <a href="https://github.com/amiranmanesh/bale-privacy-extension/issues">open an issue</a> on
+        the project repository.
+      </p>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>Independent open-source project, MIT licensed. Not affiliated with Bale.</span>
+        <span
+          ><a href="index.html">Home</a> ·
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension">GitHub</a></span
+        >
+      </div>
+    </footer>
+  </body>
+</html>

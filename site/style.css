@@ -1,0 +1,255 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --panel: #f6f6fb;
+  --line: #e5e5ef;
+  --text: #14141b;
+  --muted: #5f5f72;
+  --accent: #5b5bd6;
+  --accent-soft: #eeeefc;
+  --radius: 14px;
+  --font: system-ui, -apple-system, 'Segoe UI', Tahoma, 'Noto Sans Arabic', 'Vazirmatn', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101017;
+    --panel: #181820;
+    --line: #2a2a36;
+    --text: #f2f2f7;
+    --muted: #a2a2b4;
+    --accent: #9b9bf5;
+    --accent-soft: #1e1e33;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.65;
+}
+
+a {
+  color: var(--accent);
+}
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-block: 12px;
+}
+
+.site-header img {
+  border-radius: 9px;
+}
+
+.site-header nav {
+  margin-inline-start: auto;
+  display: flex;
+  gap: 18px;
+  font-size: 14px;
+}
+
+.brand {
+  font-weight: 650;
+}
+
+/* Hero -------------------------------------------------------------------- */
+
+.hero {
+  padding: 68px 0 40px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.15;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+
+.hero p.lead {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 620px;
+  margin: 0 auto 26px;
+}
+
+.cta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-block;
+  padding: 11px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 550;
+}
+
+.button--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.shot {
+  margin: 44px auto 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 70px rgb(20 20 60 / 14%);
+  display: block;
+  max-width: 100%;
+}
+
+.caption {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* Sections ---------------------------------------------------------------- */
+
+section {
+  padding: 46px 0;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.section-lead {
+  color: var(--muted);
+  margin: 0 0 26px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--panel);
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 26px;
+  align-items: center;
+}
+
+pre {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.note {
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 14px 16px;
+  border-radius: 0 10px 10px 0;
+  font-size: 14px;
+}
+
+[dir='rtl'] .note {
+  border-radius: 10px 0 0 10px;
+}
+
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 26px 0 50px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+footer .wrap {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Privacy page ------------------------------------------------------------ */
+
+.doc {
+  max-width: 760px;
+  padding-block: 40px 70px;
+}
+
+.doc h2 {
+  margin-top: 34px;
+}
+
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.doc th,
+.doc td {
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: start;
+}

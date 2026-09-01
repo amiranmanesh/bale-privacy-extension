@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy for Bale Web — blur chats until you need them</title>
+    <meta
+      name="description"
+      content="Open-source Chrome and Firefox extension that blurs chats, previews, media and profile pictures on Bale Web until you hover them. One permission, no network requests."
+    />
+    <link rel="icon" href="assets/icon-128.png" />
+    <link rel="stylesheet" href="style.css" />
+    <meta property="og:title" content="Privacy for Bale Web" />
+    <meta
+      property="og:description"
+      content="Blur chats, previews, media and profile pictures on Bale Web until you hover them."
+    />
+    <meta property="og:image" content="assets/screenshot-blurred.png" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <img src="assets/icon-128.png" alt="" width="30" height="30" />
+        <span class="brand">Privacy for Bale Web</span>
+        <nav>
+          <a href="#install">Install</a>
+          <a href="#features">Features</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap hero">
+        <h1>Your messages stay yours,<br />even on a shared screen.</h1>
+        <p class="lead">
+          A browser extension that blurs chat names, message previews, photos and profile pictures
+          on <strong>web.bale.ai</strong>. Hover anything to read it. Nothing leaves your browser.
+        </p>
+        <div class="cta">
+          <a class="button button--primary" href="#install">Install</a>
+          <a class="button" href="https://github.com/amiranmanesh/bale-privacy-extension"
+            >Source on GitHub</a
+          >
+          <a class="button" href="https://github.com/amiranmanesh/bale-privacy-extension/wiki"
+            >Documentation</a
+          >
+        </div>
+
+        <img
+          class="shot"
+          src="assets/screenshot-hover.png"
+          alt="Bale Web with chat names, previews and photos blurred; the pointer reveals a single message preview."
+          width="1280"
+          height="800"
+        />
+        <p class="caption">
+          Hovering one row reveals just that row. Everything in this screenshot is fabricated demo
+          data.
+        </p>
+      </div>
+
+      <section id="features" class="wrap">
+        <h2>What it hides</h2>
+        <p class="section-lead">
+          Each category has its own switch, so you decide how much to give up.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3>Chat list</h3>
+            <p>Conversation names, message previews and the sender prefix in group previews.</p>
+          </div>
+          <div class="card">
+            <h3>Messages</h3>
+            <p>Bubble text, quoted replies, link and document cards.</p>
+          </div>
+          <div class="card">
+            <h3>Sender names</h3>
+            <p>Who wrote what in a group, without hiding the conversation itself.</p>
+          </div>
+          <div class="card">
+            <h3>Photos and stickers</h3>
+            <p>Images, video thumbnails, stickers and big emoji.</p>
+          </div>
+          <div class="card">
+            <h3>Profile pictures</h3>
+            <p>Avatars in the list, in messages, in the header and in the profile panel.</p>
+          </div>
+          <div class="card">
+            <h3>What you are typing</h3>
+            <p>Optional: blur the composer while you write.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap">
+        <h2>How you get it back</h2>
+        <div class="split">
+          <div class="grid" style="grid-template-columns: 1fr">
+            <div class="card">
+              <h3>Hover</h3>
+              <p>Move the pointer over one element to read it. Everything else stays blurred.</p>
+            </div>
+            <div class="card">
+              <h3>Hold a key</h3>
+              <p>Hold Alt (or Ctrl / Shift) to reveal the whole screen while the key is down.</p>
+            </div>
+            <div class="card">
+              <h3>One keystroke</h3>
+              <p>
+                <code>Alt</code>+<code>Shift</code>+<code>B</code> toggles blurring in every open
+                tab.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Look away, it hides itself</h3>
+              <p>
+                Optionally re-blur the moment the window loses focus, or after a period of
+                inactivity — both override the master switch.
+              </p>
+            </div>
+          </div>
+          <img
+            class="shot"
+            style="margin: 0"
+            src="assets/screenshot-popup.png"
+            alt="The extension popup, with a master switch, blur strength slider and one switch per category."
+            width="1280"
+            height="800"
+          />
+        </div>
+      </section>
+
+      <section id="install" class="wrap">
+        <h2>Install</h2>
+        <p class="section-lead">
+          Store listings are linked here once the first release clears review. Until then, build it
+          yourself — it takes a minute.
+        </p>
+        <pre><code>git clone https://github.com/amiranmanesh/bale-privacy-extension.git
+cd bale-privacy-extension
+npm install
+npm run build</code></pre>
+        <div class="grid">
+          <div class="card">
+            <h3>Chrome, Edge, Brave</h3>
+            <p>
+              Open <code>chrome://extensions</code>, turn on Developer mode, choose
+              <em>Load unpacked</em> and pick <code>dist/chrome</code>.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Firefox</h3>
+            <p>
+              Open <code>about:debugging#/runtime/this-firefox</code>, choose
+              <em>Load Temporary Add-on</em> and pick <code>dist/firefox/manifest.json</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap">
+        <h2>Permissions, in full</h2>
+        <p class="section-lead">The whole list. There is no second page.</p>
+        <div class="grid">
+          <div class="card">
+            <h3><code>storage</code></h3>
+            <p>Saves your switches, and lets every open tab react when you change one.</p>
+          </div>
+          <div class="card">
+            <h3>A content script on <code>web.bale.ai</code></h3>
+            <p>The only site the extension touches. It adds one stylesheet and nothing else.</p>
+          </div>
+        </div>
+        <p class="note" style="margin-top: 18px">
+          No host permissions, no access to your tabs or browsing history, no network requests, no
+          analytics, no remote code. Read the
+          <a href="privacy.html">privacy policy</a> or the
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension">source</a>.
+        </p>
+      </section>
+
+      <section class="wrap rtl" dir="rtl" lang="fa">
+        <h2>فارسی</h2>
+        <p class="section-lead">
+          افزونه‌ای برای کروم و فایرفاکس که در وب بلهٔ فارسی، نام گفتگوها، پیش‌نمایش پیام‌ها، متن
+          پیام‌ها، عکس‌ها و تصاویر پروفایل را محو می‌کند. با بردن نشانگر روی هر عنصر، همان یکی خوانا
+          می‌شود.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3>هر دسته سوییچ جداگانه</h3>
+            <p>نام‌ها، پیش‌نمایش‌ها، متن پیام، نام فرستنده، عکس‌ها و آواتارها — هرکدام مستقل.</p>
+          </div>
+          <div class="card">
+            <h3>محو خودکار</h3>
+            <p>وقتی پنجره از حالت فعال خارج شود یا مدتی بی‌کار بمانید، دوباره محو می‌شود.</p>
+          </div>
+          <div class="card">
+            <h3>بدون ارسال داده</h3>
+            <p>تنها مجوزش ذخیره‌سازی تنظیمات است. هیچ درخواست شبکه‌ای نمی‌فرستد.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>
+          Independent open-source project, MIT licensed. Not affiliated with, endorsed by, or
+          connected to Bale.
+        </span>
+        <span>
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension/issues"
+            >Report an issue</a
+          >
+          · <a href="https://github.com/amiranmanesh/bale-privacy-extension/wiki">Wiki</a> ·
+          <a href="privacy.html">Privacy</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

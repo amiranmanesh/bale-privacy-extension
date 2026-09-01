@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bale Privacy — demo</title>
+    <style>
+      /* A fabricated messenger, used only to produce screenshots. No real data,
+         no connection to Bale; the markup mirrors the attributes the extension
+         anchors on so the real stylesheet can be applied verbatim. */
+      :root {
+        --bg: #ffffff;
+        --panel: #f7f7fa;
+        --line: #e6e6ee;
+        --text: #16161d;
+        --muted: #74748a;
+        --accent: #6366f1;
+        --bubble-in: #ffffff;
+        --bubble-out: #e8ecff;
+        font-family: system-ui, 'Segoe UI', Tahoma, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 14px;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        height: 800px;
+      }
+
+      .thread {
+        border-inline-start: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(#fafaff, #f3f3fa);
+      }
+      .thread__bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+        background: var(--bg);
+      }
+      .thread__list {
+        flex: 1;
+        padding: 18px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        justify-content: flex-end;
+        overflow: hidden;
+      }
+      .thread__composer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--muted);
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        flex: none;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 600;
+      }
+      .avatar--sm {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+      }
+
+      .msg {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+        max-width: 78%;
+      }
+      .msg--out {
+        margin-inline-start: auto;
+        flex-direction: row-reverse;
+      }
+      .bubble {
+        background: var(--bubble-in);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 8px 12px;
+        box-shadow: 0 1px 2px rgb(20 20 40 / 6%);
+      }
+      .msg--out .bubble {
+        background: var(--bubble-out);
+        border-color: #d6ddff;
+      }
+      .sender {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 0 0 2px;
+      }
+      .body {
+        line-height: 1.7;
+      }
+      .time {
+        font-size: 11px;
+        color: var(--muted);
+        text-align: end;
+        margin-top: 2px;
+      }
+      .photo {
+        width: 190px;
+        height: 116px;
+        border-radius: 10px;
+        display: block;
+        background: linear-gradient(135deg, #fca5a5, #fdba74 45%, #a5b4fc);
+      }
+
+      .side {
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+      }
+      .side__head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        padding: 11px 16px;
+        align-items: center;
+      }
+      .row:hover {
+        background: var(--panel);
+      }
+      .row__body {
+        flex: 1;
+        min-width: 0;
+      }
+      .row__top {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: baseline;
+      }
+      .row__name {
+        font-weight: 600;
+      }
+      .row__time {
+        font-size: 11px;
+        color: var(--muted);
+        flex: none;
+      }
+      .row__preview {
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .badge {
+        background: var(--accent);
+        color: #fff;
+        border-radius: 999px;
+        font-size: 11px;
+        padding: 1px 7px;
+        flex: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="side__head">
+          <div aria-label="avatar" class="avatar avatar--sm" style="background: #10b981">م</div>
+          گفتگوها
+        </div>
+
+        <div class="row" aria-label="dialog-item">
+          <div aria-label="avatar" class="avatar" style="background: #8b5cf6">ت</div>
+          <div class="row__body">
+            <div class="row__top">
+              <bdi class="row__name">تیم محصول</bdi><span class="row__time">۱۱:۰۳</span>
+            </div>
+            <div dir="rtl">
+              <span class="row__preview">ممنون. شمارهٔ حساب رو هم همین‌جا بفرست لطفاً.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" aria-label="dialog-item">
+          <div aria-label="avatar" class="avatar" style="background: #ef4444">ح</div>
+          <div class="row__body">
+            <div class="row__top">
+              <bdi class="row__name">حسابداری</bdi><span class="row__time">۱۰:۲۱</span>
+            </div>
+            <div dir="rtl"><span class="row__preview">فیش واریزی مهرماه ارسال شد</span></div>
+          </div>
+          <span aria-label="count-badge-text" class="badge">۳</span>
+        </div>
+
+        <div class="row" aria-label="dialog-item">
+          <div aria-label="avatar" class="avatar" style="background: #0ea5e9">س</div>
+          <div class="row__body">
+            <div class="row__top">
+              <bdi class="row__name">سارا محمدی</bdi><span class="row__time">۰۹:۴۷</span>
+            </div>
+            <div dir="rtl">
+              <div><span dir="auto">سارا</span>:&nbsp;</div>
+              <span class="row__preview">قرارداد رو فرستادم</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" aria-label="dialog-item">
+          <div aria-label="avatar" class="avatar" style="background: #f59e0b">ر</div>
+          <div class="row__body">
+            <div class="row__top">
+              <bdi class="row__name">رضا کاظمی</bdi><span class="row__time">دیروز</span>
+            </div>
+            <div dir="rtl"><span class="row__preview">شمارهٔ کارت رو برات می‌فرستم</span></div>
+          </div>
+        </div>
+
+        <div class="row" aria-label="dialog-item">
+          <div aria-label="avatar" class="avatar" style="background: #14b8a6">ک</div>
+          <div class="row__body">
+            <div class="row__top">
+              <bdi class="row__name">کانال اطلاع‌رسانی</bdi><span class="row__time">دیروز</span>
+            </div>
+            <div dir="rtl"><span class="row__preview">نسخهٔ جدید منتشر شد</span></div>
+          </div>
+        </div>
+      </aside>
+      <section class="thread">
+        <div class="thread__bar" aria-label="ChatAppBar">
+          <div aria-label="avatar" class="avatar" style="background: #8b5cf6">ت</div>
+          <div><p style="margin: 0; font-weight: 600">تیم محصول</p></div>
+        </div>
+
+        <div class="thread__list">
+          <div class="msg" aria-label="message-item">
+            <div aria-label="avatar" class="avatar avatar--sm" style="background: #14b8a6">م</div>
+            <div class="bubble">
+              <p class="sender"><span>مهدی رستمی</span></p>
+              <div data-sentry-source-file="Text.tsx" class="body">
+                صبح بخیر. گزارش هفتگی رو تا ظهر می‌فرستم.
+              </div>
+              <div data-sentry-source-file="Info.tsx" class="time">
+                <p style="margin: 0">۰۹:۱۲</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg msg--out" aria-label="message-item">
+            <div class="bubble">
+              <div data-sentry-source-file="Text.tsx" class="body">عالی، منتظرم.</div>
+              <div data-sentry-source-file="Info.tsx" class="time">
+                <p style="margin: 0">۰۹:۱۵</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg" aria-label="message-item">
+            <div aria-label="avatar" class="avatar avatar--sm" style="background: #0ea5e9">س</div>
+            <div class="bubble">
+              <p class="sender"><span>سارا محمدی</span></p>
+              <div data-sentry-source-file="Text.tsx" class="body">
+                رمز ورود پنل جدید رو براتون فرستادم، لطفاً بعد از اولین ورود عوضش کنید.
+              </div>
+              <div data-sentry-source-file="Info.tsx" class="time">
+                <p style="margin: 0">۱۰:۴۲</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg" aria-label="message-item">
+            <div aria-label="avatar" class="avatar avatar--sm" style="background: #f59e0b">ر</div>
+            <div class="bubble">
+              <p class="sender"><span>رضا کاظمی</span></p>
+              <div data-sentry-source-file="Text.tsx" class="body">
+                قرارداد امضا شد ✅ فردا ساعت ۹ جلسه داریم.
+              </div>
+              <span class="photo" data-testid="photo-message"></span>
+              <div data-sentry-source-file="Info.tsx" class="time">
+                <p style="margin: 0">۱۰:۵۵</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg msg--out" aria-label="message-item">
+            <div class="bubble">
+              <div data-sentry-source-file="Text.tsx" class="body">
+                ممنون. شمارهٔ حساب رو هم همین‌جا بفرست لطفاً.
+              </div>
+              <div data-sentry-source-file="Info.tsx" class="time">
+                <p style="margin: 0">۱۱:۰۳</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread__composer">
+          <span>＋</span>
+          <div aria-label="editable-message-text" style="flex: 1">پیام خود را بنویسید…</div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
