@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build both targets
+        run: npm run build
+
+      - name: Verify the icons are reproducible
+        run: |
+          npm run icons
+          git diff --exit-code -- public/icons
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unpacked-extensions
+          path: dist/
+          retention-days: 14
+
+  addon-lint:
+    name: web-ext lint (Firefox)
+    runs-on: ubuntu-latest
+    # Advisory: AMO's linter is stricter than the store's own review bar and
+    # its warnings change between releases, so it must not gate a merge.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build:firefox
+      - run: npx --yes web-ext lint --source-dir dist/firefox --warnings-as-errors=false

@@ -1,0 +1,51 @@
+name: A category stopped blurring
+description: Something that used to be blurred on web.bale.ai is now visible
+labels: [selectors]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bale ships new builds regularly and its class names are per-build hashes,
+        so an anchor occasionally disappears. The diagnostics below tell us which one.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Which category
+      multiple: true
+      options:
+        - Chat list names and previews
+        - Chat list profile pictures
+        - Conversation header
+        - Message text
+        - Photos, videos and stickers
+        - Sender profile pictures
+        - What you are typing
+        - Profile and info panels
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Selector diagnostics
+      description: >-
+        Options page -> Advanced selectors -> Log selector diagnostics, then reload
+        web.bale.ai and paste the rows with 0 matches from the page console.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: probe
+    attributes:
+      label: DOM probe output (optional)
+      description: >-
+        Paste tools/dom-probe.js into the page console, run baleProbe(), then
+        copy(baleProbe.last). All text is replaced with a length placeholder before
+        printing, so the report contains no message content.
+      render: json
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and extension version
+      placeholder: Chrome 141 / extension 0.1.0
+    validations:
+      required: true
