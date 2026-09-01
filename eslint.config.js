@@ -33,8 +33,10 @@ export default tseslint.config(
     },
   },
   {
+    // Build and tooling scripts run in Node, but the Playwright ones also carry
+    // callbacks that are serialised into a page, so both global sets apply.
     files: ['scripts/**/*.mjs', 'scripts/**/*.js'],
-    languageOptions: { globals: { ...globals.node } },
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
     rules: { 'no-console': 'off' },
   },
   {
