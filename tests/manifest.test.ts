@@ -33,6 +33,11 @@ describe('buildManifest', () => {
     expect(buildManifest('chrome').minimum_chrome_version).toBe('111');
   });
 
+  it('declares to AMO that it collects nothing', () => {
+    const gecko = buildManifest('firefox').browser_specific_settings.gecko;
+    expect(gecko.data_collection_permissions).toEqual({ required: ['none'] });
+  });
+
   it('rejects an unknown target', () => {
     expect(() => buildManifest('safari')).toThrow(/Unknown target/);
   });

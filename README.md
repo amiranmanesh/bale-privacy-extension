@@ -3,13 +3,27 @@
   <h1>Privacy for Bale Web</h1>
   <p><strong>Blur chats, previews, media and profile pictures on <a href="https://web.bale.ai/chat">web.bale.ai</a> until you actually need to read them.</strong></p>
   <p>
+    <a href="https://amiranmanesh.github.io/bale-privacy-extension">Website</a> ·
+    <a href="https://github.com/amiranmanesh/bale-privacy-extension/wiki">Wiki</a> ·
     <a href="#install">Install</a> ·
-    <a href="#features">Features</a> ·
     <a href="docs/ARCHITECTURE.md">Architecture</a> ·
-    <a href="docs/PRIVACY.md">Privacy</a> ·
+    <a href="https://amiranmanesh.github.io/bale-privacy-extension/privacy.html">Privacy</a> ·
     <a href="#فارسی">فارسی</a>
   </p>
+  <p>
+    <a href="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml/badge.svg" /></a>
+    <a href="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/pages.yml"><img alt="Pages" src="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/pages.yml/badge.svg" /></a>
+    <img alt="Manifest V3" src="https://img.shields.io/badge/manifest-v3-5b5bd6" />
+    <img alt="Permissions: storage" src="https://img.shields.io/badge/permissions-storage%20only-16a34a" />
+    <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue" /></a>
+  </p>
 </div>
+
+<p align="center">
+  <img src="site/assets/screenshot-hover.png" width="820"
+       alt="Bale Web with names, previews and photos blurred; the pointer reveals a single row." />
+</p>
+<p align="center"><sub>Hovering one row reveals just that row. Everything shown is fabricated demo data.</sub></p>
 
 ---
 
@@ -38,7 +52,9 @@ endorsed by, or connected to Bale.
 
 ### From the stores
 
-Store links are added here once the first release is reviewed.
+Not published yet — store links appear here and on the [website](https://amiranmanesh.github.io/bale-privacy-extension) once the first
+release clears review. Progress and the submission runbook live in
+[the wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
 
 ### From source
 
@@ -96,12 +112,27 @@ npm run package        # zips both targets into release/
 
 Full guide: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
+## Documentation
+
+|                                                                                                      |                                                   |
+| ---------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| [Website](https://amiranmanesh.github.io/bale-privacy-extension)                                     | What it does, screenshots, install                |
+| [Wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki)                                  | Installation, every setting, troubleshooting, FAQ |
+| [Settings reference](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Settings-Reference) | What each switch covers, and what stays sharp     |
+| [Troubleshooting](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Troubleshooting)       | Start here when something looks wrong             |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                         | How the blur engine works                         |
+| [docs/SELECTORS.md](docs/SELECTORS.md)                                                               | How selectors are derived and repaired            |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)                                                           | Building, debugging, releasing                    |
+| [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md)                                                               | Store listing copy and permission justifications  |
+
 ## Contributing
 
-Bug reports about a category that stopped blurring are especially welcome —
-please include your browser version and the output of
-[`tools/dom-probe.js`](tools/dom-probe.js), which redacts all message text
-before printing. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Reports that a category stopped blurring are the most useful thing you can send —
+[the issue forms](https://github.com/amiranmanesh/bale-privacy-extension/issues/new/choose) ask for the diagnostics that make the fix a
+one-line change. Both diagnostic tools replace message text with a `«N chars»`
+placeholder before printing, so their output is safe to paste.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [SUPPORT.md](SUPPORT.md).
 
 ## License
 

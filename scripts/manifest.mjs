@@ -76,6 +76,10 @@ export function buildManifest(target, version = pkg.version) {
         id: GECKO_ID,
         // Firefox shipped :has() in 121.
         strict_min_version: '121.0',
+        // AMO requires an explicit consent declaration on every new listing.
+        // The extension stores its settings locally and never phones home,
+        // so the answer is the sentinel "none" rather than a category list.
+        data_collection_permissions: { required: ['none'] },
       },
     };
   } else {

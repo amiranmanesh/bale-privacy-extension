@@ -122,7 +122,7 @@
     "message": "Bale Privacy settings"
   },
   "options_subtitle": {
-    "message": "Everything is stored in your browser. Nothing is ever sent anywhere."
+    "message": "Your settings stay in your browser. The extension makes no network requests."
   },
   "advanced_hint": {
     "message": "Bale changes its markup from time to time. Add one CSS selector per line to extend a category without waiting for an update."

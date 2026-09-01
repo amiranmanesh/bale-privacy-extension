@@ -1,24 +1,17 @@
 # Store submission
 
+> The listing copy, permission justifications and data-use answers live in
+> [`CHROMEWEBSTORE.md`](../CHROMEWEBSTORE.md) — copy from there at submission time.
+> The step-by-step runbook is in the
+> [wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
+> This file covers the parts that belong with the build.
+
 Both packages are produced by `npm run package` into `release/`:
 
 ```
 release/bale-privacy-<version>-chrome.zip
 release/bale-privacy-<version>-firefox.zip
 ```
-
-## Listing copy
-
-**Name:** Privacy for Bale Web (45-character limit — currently 20)
-
-**Summary / short description** (132-character limit):
-
-> Blur chats, previews, media and avatars on Bale Web until you hover them. Everything stays on your device.
-
-**Category:** Privacy & Security · **Language:** English, Persian
-
-**Detailed description** — reuse the feature table from the README, then state
-plainly: no data collection, no network requests, one permission.
 
 ## Chrome Web Store
 
@@ -31,9 +24,11 @@ plainly: no data collection, no network requests, one permission.
     modifies; the stylesheet that performs the blur is injected there."
 - **Data usage disclosures:** tick _does not collect user data_; the extension
   makes no network requests, so all data-use questions are answered "no".
-- **Privacy policy URL:** link to `docs/PRIVACY.md` in the public repository.
-- **Assets:** 128×128 icon (`public/icons/icon-128.png`), at least one
-  1280×800 screenshot, and a 440×280 small promo tile if you want one.
+- **Privacy policy URL:** <https://amiranmanesh.github.io/bale-privacy-extension/privacy.html>
+  (published from `site/` by the Pages workflow).
+- **Assets:** 128×128 icon (`public/icons/icon-128.png`) and the 1280×800 screenshots in
+  `site/assets/`, regenerated with `node scripts/screenshots.mjs`. They are rendered from
+  a fabricated conversation, so no real account or message is ever published.
 - **Remote code:** answer _No_. Everything is bundled; nothing is fetched.
 
 ## Firefox Add-ons (AMO)
@@ -41,6 +36,9 @@ plainly: no data collection, no network requests, one permission.
 - The add-on id is pinned in `scripts/manifest.mjs` and must not change between
   releases.
 - `strict_min_version` is `121.0`, the first Firefox with `:has()`.
+- `browser_specific_settings.gecko.data_collection_permissions` is
+  `{ "required": ["none"] }` — AMO rejects new listings without the key,
+  and "none" is the sentinel for an add-on that collects nothing.
 - **Source code submission is required** because the package is built with
   esbuild. Submit the repository (or a tarball of it, excluding
   `node_modules/`, `dist/` and `release/`) plus these instructions:
