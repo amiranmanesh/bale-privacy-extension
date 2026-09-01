@@ -1,7 +1,8 @@
 # Store submission
 
 > The listing copy, permission justifications and data-use answers live in
-> [`CHROMEWEBSTORE.md`](../CHROMEWEBSTORE.md) — copy from there at submission time.
+> [`CHROMEWEBSTORE.md`](../CHROMEWEBSTORE.md) and [`AMO.md`](../AMO.md) — copy from
+> there at submission time.
 > The step-by-step runbook is in the
 > [wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
 > This file covers the parts that belong with the build.
