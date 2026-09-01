@@ -1,0 +1,40 @@
+{
+  "name": "bale-privacy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Blur chats, previews, media and avatars on Bale Web (web.bale.ai) until you need them.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "clean": "rm -rf dist release",
+    "icons": "node scripts/gen-icons.mjs",
+    "build": "node scripts/build.mjs",
+    "build:chrome": "node scripts/build.mjs --target chrome",
+    "build:firefox": "node scripts/build.mjs --target firefox",
+    "dev": "node scripts/build.mjs --target chrome --watch",
+    "dev:firefox": "node scripts/build.mjs --target firefox --watch",
+    "package": "node scripts/build.mjs --zip",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "jsdom": "^25.0.1",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.20.0",
+    "vitest": "^3.0.0"
+  }
+}
