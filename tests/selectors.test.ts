@@ -24,7 +24,7 @@ describe('target registry', () => {
 
   it('only ships selectors the browser can actually parse', () => {
     for (const definition of TARGET_DEFINITIONS) {
-      for (const selector of definition.selectors) {
+      for (const selector of [...definition.selectors, ...(definition.mediaSelectors ?? [])]) {
         expect(() => document.querySelector(selector), selector).not.toThrow();
       }
     }
@@ -44,7 +44,12 @@ describe('generated stylesheet', () => {
 
     const sheet = style.sheet;
     expect(sheet).not.toBeNull();
-    // Four blocks per target: blur, transition, hover reveal, peek reveal.
-    expect(sheet?.cssRules.length).toBe(TARGET_DEFINITIONS.length * 4);
+    // Four blocks (blur, transition, hover reveal, peek reveal) per group of
+    // selectors, and a target with picture-only selectors contributes two groups.
+    const groups = TARGET_DEFINITIONS.reduce(
+      (total, target) => total + 1 + (target.mediaSelectors?.length ? 1 : 0),
+      0,
+    );
+    expect(sheet?.cssRules.length).toBe(groups * 4);
   });
 });

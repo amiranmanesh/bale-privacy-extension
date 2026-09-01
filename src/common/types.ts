@@ -8,10 +8,11 @@ export const TARGET_IDS = [
   'sidebarAvatars',
   'headerPeer',
   'messageText',
+  'senderNames',
   'messageMedia',
   'messageAvatars',
   'composer',
-  'profileMedia',
+  'profilePanel',
 ] as const;
 
 export type TargetId = (typeof TARGET_IDS)[number];
@@ -63,4 +64,10 @@ export interface TargetDefinition {
    * the ordering only documents intent and helps when pruning stale ones.
    */
   selectors: string[];
+  /**
+   * Selectors that belong to this switch but are pictures rather than text, so
+   * they get the stronger graphic blur. Lets one user-facing toggle cover, say,
+   * a conversation header's name *and* its photo.
+   */
+  mediaSelectors?: string[];
 }

@@ -80,6 +80,15 @@ describe('migrateSettings', () => {
     expect(result).not.toHaveProperty('blur');
   });
 
+  it('renames the v1 profileMedia target to profilePanel', () => {
+    const result = migrateSettings({
+      schemaVersion: 1,
+      targets: { ...DEFAULT_SETTINGS.targets, profileMedia: false },
+    });
+    expect(result.targets.profilePanel).toBe(false);
+    expect(result.targets).not.toHaveProperty('profileMedia');
+  });
+
   it('leaves a current-schema payload untouched apart from validation', () => {
     const stored = { ...DEFAULT_SETTINGS, blurRadius: 12 };
     expect(migrateSettings(stored)).toEqual({ ...DEFAULT_SETTINGS, blurRadius: 12 });

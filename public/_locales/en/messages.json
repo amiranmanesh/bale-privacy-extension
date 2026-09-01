@@ -7,72 +7,153 @@
     "message": "Blur chats, previews, media and avatars on Bale Web until you hover them. Everything stays on your device.",
     "description": "Store listing description."
   },
-  "action_title": { "message": "Bale Privacy" },
-  "command_toggle": { "message": "Turn blurring on or off" },
-
-  "popup_title": { "message": "Bale Privacy" },
-  "popup_subtitle": { "message": "Blur what is on screen" },
-  "popup_openOptions": { "message": "All settings" },
-  "popup_openBale": { "message": "Open Bale" },
-  "popup_shortcutHint": { "message": "Shortcut: Alt+Shift+B" },
-
-  "section_general": { "message": "General" },
-  "section_reveal": { "message": "Revealing" },
-  "section_auto": { "message": "Automatic blur" },
-  "section_targets": { "message": "What to blur" },
-  "section_advanced": { "message": "Advanced selectors" },
-  "section_data": { "message": "Backup" },
-
-  "setting_enabled": { "message": "Blur enabled" },
-  "setting_enabled_hint": { "message": "Toggle from anywhere with the keyboard shortcut." },
-  "setting_blurRadius": { "message": "Blur strength" },
-  "setting_animate": { "message": "Fade in and out" },
-  "setting_revealOnHover": { "message": "Reveal on hover" },
+  "action_title": {
+    "message": "Bale Privacy"
+  },
+  "command_toggle": {
+    "message": "Turn blurring on or off"
+  },
+  "popup_title": {
+    "message": "Bale Privacy"
+  },
+  "popup_subtitle": {
+    "message": "Blur what is on screen"
+  },
+  "popup_openOptions": {
+    "message": "All settings"
+  },
+  "popup_openBale": {
+    "message": "Open Bale"
+  },
+  "popup_shortcutHint": {
+    "message": "Shortcut: Alt+Shift+B"
+  },
+  "section_general": {
+    "message": "General"
+  },
+  "section_reveal": {
+    "message": "Revealing"
+  },
+  "section_auto": {
+    "message": "Automatic blur"
+  },
+  "section_targets": {
+    "message": "What to blur"
+  },
+  "section_advanced": {
+    "message": "Advanced selectors"
+  },
+  "section_data": {
+    "message": "Backup"
+  },
+  "setting_enabled": {
+    "message": "Blur enabled"
+  },
+  "setting_enabled_hint": {
+    "message": "Toggle from anywhere with the keyboard shortcut."
+  },
+  "setting_blurRadius": {
+    "message": "Blur strength"
+  },
+  "setting_animate": {
+    "message": "Fade in and out"
+  },
+  "setting_revealOnHover": {
+    "message": "Reveal on hover"
+  },
   "setting_revealOnHover_hint": {
     "message": "Move the pointer over a blurred element to read it."
   },
-  "setting_revealDelayMs": { "message": "Hover delay" },
-  "setting_holdKeyReveal": { "message": "Hold a key to reveal everything" },
-  "setting_holdKey": { "message": "Reveal key" },
-  "setting_blurOnWindowBlur": { "message": "Blur when the window loses focus" },
+  "setting_revealDelayMs": {
+    "message": "Hover delay"
+  },
+  "setting_holdKeyReveal": {
+    "message": "Hold a key to reveal everything"
+  },
+  "setting_holdKey": {
+    "message": "Reveal key"
+  },
+  "setting_blurOnWindowBlur": {
+    "message": "Blur when the window loses focus"
+  },
   "setting_blurOnWindowBlur_hint": {
     "message": "Overrides the master switch while another window is in front."
   },
-  "setting_blurOnIdle": { "message": "Blur after a period of inactivity" },
-  "setting_idleSeconds": { "message": "Inactivity timeout" },
-  "setting_debug": { "message": "Log selector diagnostics" },
+  "setting_blurOnIdle": {
+    "message": "Blur after a period of inactivity"
+  },
+  "setting_idleSeconds": {
+    "message": "Inactivity timeout"
+  },
+  "setting_debug": {
+    "message": "Log selector diagnostics"
+  },
   "setting_debug_hint": {
     "message": "Prints how many elements each selector matches to the Bale page console."
   },
-
-  "target_sidebarText": { "message": "Chat list names and previews" },
-  "target_sidebarAvatars": { "message": "Chat list profile pictures" },
-  "target_headerPeer": { "message": "Conversation header" },
-  "target_messageText": { "message": "Message text" },
-  "target_messageMedia": { "message": "Photos, videos and stickers" },
-  "target_messageAvatars": { "message": "Sender profile pictures" },
-  "target_composer": { "message": "What you are typing" },
-  "target_profileMedia": { "message": "Profile and info panels" },
-
-  "options_title": { "message": "Bale Privacy settings" },
+  "target_sidebarText": {
+    "message": "Chat list names and previews"
+  },
+  "target_sidebarAvatars": {
+    "message": "Chat list profile pictures"
+  },
+  "target_headerPeer": {
+    "message": "Conversation header"
+  },
+  "target_messageText": {
+    "message": "Message text"
+  },
+  "target_senderNames": {
+    "message": "Sender names in groups"
+  },
+  "target_messageMedia": {
+    "message": "Photos, videos and stickers"
+  },
+  "target_messageAvatars": {
+    "message": "Sender profile pictures"
+  },
+  "target_composer": {
+    "message": "What you are typing"
+  },
+  "target_profilePanel": {
+    "message": "Profile and info panels"
+  },
+  "options_title": {
+    "message": "Bale Privacy settings"
+  },
   "options_subtitle": {
     "message": "Everything is stored in your browser. Nothing is ever sent anywhere."
   },
   "advanced_hint": {
     "message": "Bale changes its markup from time to time. Add one CSS selector per line to extend a category without waiting for an update."
   },
-
-  "action_export": { "message": "Export settings" },
-  "action_import": { "message": "Import settings" },
-  "action_reset": { "message": "Reset to defaults" },
-
-  "status_exported": { "message": "Settings exported." },
-  "status_imported": { "message": "Settings imported." },
-  "status_importFailed": { "message": "That file could not be read." },
-  "status_reset": { "message": "Settings reset to defaults." },
-  "status_selectorRejected": { "message": "Some selectors were rejected: " },
-
-  "unit_seconds": { "message": "s" },
+  "action_export": {
+    "message": "Export settings"
+  },
+  "action_import": {
+    "message": "Import settings"
+  },
+  "action_reset": {
+    "message": "Reset to defaults"
+  },
+  "status_exported": {
+    "message": "Settings exported."
+  },
+  "status_imported": {
+    "message": "Settings imported."
+  },
+  "status_importFailed": {
+    "message": "That file could not be read."
+  },
+  "status_reset": {
+    "message": "Settings reset to defaults."
+  },
+  "status_selectorRejected": {
+    "message": "Some selectors were rejected: "
+  },
+  "unit_seconds": {
+    "message": "s"
+  },
   "footer_disclaimer": {
     "message": "Independent open-source project. Not affiliated with, endorsed by, or connected to Bale."
   }

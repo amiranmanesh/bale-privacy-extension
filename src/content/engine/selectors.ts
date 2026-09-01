@@ -4,89 +4,37 @@ import type { TargetDefinition } from '../../common/types.js';
  * ---------------------------------------------------------------------------
  * How Bale Web is targeted
  * ---------------------------------------------------------------------------
- * Bale Web is a React app bundled with webpack + CSS Modules, so every class
- * name in the DOM is a per-build hash (`_BKsFW`). Those are useless as
- * selectors: they change on every deploy.
+ * Bale Web is a React app bundled with webpack and CSS Modules, so every class
+ * name in the DOM is a per-build hash (`_BKsFW`) and useless as an anchor.
  *
- * The bundle is however built with Sentry's component-annotate plugin, which
- * leaves three stable, source-derived attributes on the rendered elements:
+ * Three attribute families survive a rebuild, in decreasing order of trust:
  *
- *   data-sentry-component="MessagesListFC"        (React component name)
- *   data-sentry-element="DialogItem"              (JSX element name)
- *   data-sentry-source-file="DialogItemWrapper.tsx"
+ * 1. `aria-label` — written by hand for accessibility, semantic and rarely
+ *    churned: `dialog-item`, `message-item`, `avatar`, `member-dialog`,
+ *    `ChatAppBar`, `editable-message-text`.
+ * 2. `data-sentry-source-file` / `data-sentry-component` — emitted by Sentry's
+ *    component-annotate plugin, derived from source file and component names:
+ *    `Dialog.tsx`, `BaseBubble.tsx`, `Text.tsx`, `NewTextContainerFC`.
+ * 3. `data-testid` — present on a handful of nodes: `photo-message`,
+ *    `thumbnail`, `story-item`.
  *
- * Those are what we anchor on. A handful of `data-testid` attributes and one
- * hand-written class (`._message-item`) survive minification as well and act
- * as a second layer.
+ * Every selector below was verified against a logged-in session with
+ * `scripts/browser.mjs`; docs/SELECTORS.md explains how to repeat that.
  *
- * On top of the anchors we use a *region + leaf* strategy: pick a container we
- * are confident about, then blur only its leaf elements (nodes with no element
- * children). That obfuscates the text without wrapping large layout containers
- * in a `filter`, which would create a containing block and break the app's
- * fixed-position menus.
- *
- * See docs/SELECTORS.md for how to re-derive this list against a new build.
+ * Note the deliberate omissions: message timestamps (`Info.tsx`) and unread
+ * badges (`count-badge-text`) stay sharp, because blurring them costs
+ * legibility without hiding anything private.
  */
 
-/**
- * Leaf elements that carry text: no element children, not empty, not media.
- * `:has()` is kept last so the selector also parses in engines that only
- * support it at the end of a compound (notably jsdom, which the tests use).
- */
-const LEAF = '*:not(:empty, img, svg, canvas, video, input, textarea, br):not(:has(*))';
+/** A chat row in the sidebar list. */
+const DIALOG_ROW = ['[aria-label="dialog-item"]', '[data-sentry-source-file="Dialog.tsx"]'];
 
-/** Elements that render a picture, wherever they appear. */
-const GRAPHIC = ['img', 'canvas', 'video', 'svg[width]'] as const;
+/** One message row in the open conversation. */
+const MESSAGE_ROW = ['[aria-label="message-item"]', '[data-sentry-source-file="BaseBubble.tsx"]'];
 
-/** Containers we trust to be "one row in the chat list". */
-const SIDEBAR_ROW = [
-  '[data-sentry-element="DialogItem"]',
-  '[data-sentry-source-file="DialogItemWrapper.tsx"]',
-  '[data-sentry-component="ShortDialogSearchResult"]',
-  '[data-sentry-component="PeerSearchResult"]',
-  '[data-sentry-component="TopPeerItem"]',
-] as const;
+/** A person row in the profile / group-members panel. */
+const MEMBER_ROW = ['[aria-label="member-dialog"]', '[data-sentry-source-file="SmallDialog.tsx"]'];
 
-/** Containers we trust to be "the scrolling message history". */
-const MESSAGE_LIST = [
-  '[data-sentry-component="MessagesListFC"]',
-  '[data-sentry-component="NewMessagesList"]',
-  '[data-sentry-source-file="MessagesList.new.tsx"]',
-  '._message-item',
-] as const;
-
-/** The bubble body of a single message. */
-const MESSAGE_BODY = [
-  '[data-sentry-component="MessageContent"]',
-  '[data-sentry-component="TextWithLinkSummary"]',
-  '[data-sentry-element="TextMessage"]',
-  '[data-sentry-component="ConnectedMessageSlot"]',
-] as const;
-
-/** The header above an open conversation (peer name, member count, last seen). */
-const PEER_HEADER = [
-  '[data-sentry-component="ToolbarFC"]',
-  '[data-sentry-element="ToolbarContent"]',
-  '[data-sentry-source-file="PeerToolbar.tsx"]',
-  '[data-sentry-source-file="Toolbar.tsx"]',
-] as const;
-
-/** The message composer. */
-const COMPOSER = [
-  '[data-sentry-component="FeditableMessageInputFC"]',
-  '[data-sentry-source-file="FeditableMessageInput.tsx"]',
-  '[data-testid="message-text-area"]',
-] as const;
-
-/** Profile / peer-info surfaces outside the message list. */
-const PROFILE = [
-  '[data-sentry-component="AboutFC"]',
-  '[data-sentry-component="GroupPeerFC"]',
-  '[data-sentry-component="SeenerList"]',
-  '[data-sentry-component="AvatarCommandItem"]',
-] as const;
-
-/** Cartesian product of containers and descendant patterns. */
 const within = (containers: readonly string[], descendants: readonly string[]): string[] =>
   containers.flatMap((container) => descendants.map((d) => `${container} ${d}`));
 
@@ -95,31 +43,56 @@ export const TARGET_DEFINITIONS: TargetDefinition[] = [
     id: 'sidebarText',
     labelKey: 'target_sidebarText',
     kind: 'text',
-    selectors: within(SIDEBAR_ROW, [LEAF]),
+    // The chat name is a <bdi> (bidirectional isolation for mixed-script
+    // names) and the preview text is a <span> under the row's [dir] wrapper.
+    // A group preview is prefixed with the last sender, rendered as
+    // `<div><span dir="auto">Name</span>: </div>` — the wrapper is matched so
+    // the trailing colon blurs with the name instead of hanging there alone.
+    // The timestamp and the unread badge match none of these, and stay sharp.
+    selectors: [...within(DIALOG_ROW, ['bdi', '[dir] span', 'span[dir]', 'div:has(> span[dir])'])],
   },
   {
     id: 'sidebarAvatars',
     labelKey: 'target_sidebarAvatars',
     kind: 'graphic',
+    // An avatar container holds an <img>, an <svg> icon or a text initial, so
+    // the container itself is the only thing that covers every case.
     selectors: [
-      ...within(SIDEBAR_ROW, GRAPHIC),
-      '[data-sentry-component="ArchiveAvatar"]',
-      '[data-sentry-element="AvatarItem"]',
+      ...within(DIALOG_ROW, ['[aria-label="avatar"]']),
+      '[data-testid="story-item"] [aria-label="avatar"]',
+      '[data-sentry-component="ArchiveAvatar"] [aria-label="avatar"]',
+      '[data-sentry-source-file="GroupedAvatar.tsx"]',
     ],
   },
   {
     id: 'headerPeer',
     labelKey: 'target_headerPeer',
     kind: 'text',
-    selectors: [...within(PEER_HEADER, [LEAF]), ...within(PEER_HEADER, GRAPHIC)],
+    selectors: ['[aria-label="ChatAppBar"] p'],
+    mediaSelectors: ['[aria-label="ChatAppBar"] [aria-label="avatar"]'],
   },
   {
     id: 'messageText',
     labelKey: 'target_messageText',
     kind: 'text',
+    // Text.tsx covers the bubble body and the quoted text of a reply preview;
+    // `a p` covers the title and description of a link or document card.
     selectors: [
-      ...within(MESSAGE_BODY, [LEAF]),
-      ...within(MESSAGE_LIST, ['[data-sentry-element="TextMessage"]']),
+      '[data-sentry-source-file="Text.tsx"]',
+      '[data-sentry-component="NewTextContainerFC"]',
+      ...within(MESSAGE_ROW, ['a p']),
+    ],
+  },
+  {
+    id: 'senderNames',
+    labelKey: 'target_senderNames',
+    kind: 'text',
+    // The sender line above a bubble in a group is the only <p> wrapping a
+    // <span>; the timestamp <p> under the bubble holds its text directly.
+    // Preview.tsx carries the name of whoever wrote the quoted message.
+    selectors: [
+      ...within(MESSAGE_ROW, ['p > span']),
+      '[data-sentry-source-file="Preview.tsx"] span[dir]',
     ],
   },
   {
@@ -127,42 +100,39 @@ export const TARGET_DEFINITIONS: TargetDefinition[] = [
     labelKey: 'target_messageMedia',
     kind: 'graphic',
     selectors: [
-      ...within(MESSAGE_LIST, GRAPHIC),
-      '[data-sentry-component="AlbumFC"]',
-      '[data-sentry-component="AlbumMediaFC"]',
-      '[data-sentry-component="GifMessage"]',
-      '[data-sentry-component="StickerMessage"]',
-      '[data-sentry-component="PhotoWithShimmer"]',
-      '[data-sentry-component="VideoWithShimmer"]',
-      '[data-testid="sticker-message"]',
-      '[data-testid="original-photo"]',
-      '[data-testid="video-wrapper"]',
-      '[data-testid="document-message"]',
+      '[data-testid="photo-message"]',
+      '[data-testid="thumbnail"]',
+      '[data-sentry-source-file="Thumbnail.tsx"]',
+      '[data-sentry-source-file="Media.preview.tsx"]',
+      '[data-sentry-source-file="Photo.new.tsx"]',
+      '[data-sentry-source-file="Video.new.tsx"]',
+      '[data-sentry-source-file="NormalEmojiGrid.tsx"]',
+      '[data-sentry-source-file="DocumentIcon.tsx"]',
+      // Catch-all for media the anchors above miss, minus the sender avatar.
+      ...within(MESSAGE_ROW, ['img:not([aria-label="avatar"] img)', 'video', 'canvas']),
     ],
   },
   {
     id: 'messageAvatars',
     labelKey: 'target_messageAvatars',
     kind: 'graphic',
-    selectors: [
-      ...within(
-        ['[data-sentry-component="GroupPeerFC"]', '[data-sentry-element="AvatarItem"]'],
-        [...GRAPHIC],
-      ),
-      '[data-sentry-component="SeenerList"] img',
-    ],
+    selectors: [...within(MESSAGE_ROW, ['[aria-label="avatar"]'])],
   },
   {
     id: 'composer',
     labelKey: 'target_composer',
     kind: 'text',
-    selectors: [...COMPOSER],
+    selectors: ['[aria-label="editable-message-text"]', '#editable-message-text'],
   },
   {
-    id: 'profileMedia',
-    labelKey: 'target_profileMedia',
-    kind: 'graphic',
-    selectors: [...within(PROFILE, GRAPHIC), ...within(PROFILE, [LEAF])],
+    id: 'profilePanel',
+    labelKey: 'target_profilePanel',
+    kind: 'text',
+    selectors: [...within(MEMBER_ROW, ['p']), '[data-sentry-source-file="GroupInfo.tsx"] bdi'],
+    mediaSelectors: [
+      ...within(MEMBER_ROW, ['[aria-label="avatar"]']),
+      '[data-sentry-source-file="SharedMediaTabContentView.tsx"] img',
+    ],
   },
 ];
 

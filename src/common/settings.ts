@@ -1,7 +1,7 @@
 import { HOLD_KEYS, TARGET_IDS } from './types.js';
 import type { HoldKey, Settings, TargetId } from './types.js';
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const LIMITS = {
   blurRadius: { min: 1, max: 24 },
@@ -19,10 +19,11 @@ export const DEFAULT_SETTINGS: Settings = {
     sidebarAvatars: true,
     headerPeer: true,
     messageText: true,
+    senderNames: true,
     messageMedia: true,
     messageAvatars: true,
     composer: false,
-    profileMedia: true,
+    profilePanel: true,
   },
   blurRadius: 6,
   revealOnHover: true,
@@ -144,6 +145,17 @@ export const migrateSettings = (raw: unknown): Settings => {
   if (stored < 1 && typeof input.blur === 'boolean') {
     input.enabled = input.blur;
     delete input.blur;
+  }
+
+  // v1 -> v2: `profileMedia` grew to cover the whole profile panel, not just
+  // its pictures, and was renamed to match.
+  if (stored < 2 && isRecord(input.targets)) {
+    const targets = { ...input.targets };
+    if ('profileMedia' in targets) {
+      targets.profilePanel = targets.profileMedia;
+      delete targets.profileMedia;
+    }
+    input.targets = targets;
   }
 
   return sanitizeSettings(input);

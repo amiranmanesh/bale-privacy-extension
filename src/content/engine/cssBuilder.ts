@@ -25,11 +25,72 @@ export const selectorsForTarget = (
   return [...new Set([...definition.selectors, ...extra])];
 };
 
-const blurVar = (definition: TargetDefinition): string =>
-  definition.kind === 'graphic' ? CSS_VARS.radius : CSS_VARS.textRadius;
+/** Media selectors get the stronger graphic blur regardless of the target kind. */
+export const mediaSelectorsForTarget = (definition: TargetDefinition): string[] => [
+  ...new Set(definition.mediaSelectors ?? []),
+];
+
+const blurVar = (kind: TargetDefinition['kind']): string =>
+  kind === 'graphic' ? CSS_VARS.radius : CSS_VARS.textRadius;
 
 const rule = (selectors: string[], body: string): string =>
   selectors.length === 0 ? '' : `${selectors.join(',\n')} {\n${body}\n}\n`;
+
+/**
+ * Emits the four blocks that make one group of selectors blur, fade, reveal on
+ * hover and reveal on peek, all gated on the target's state token.
+ */
+const blocksFor = (
+  targetId: TargetId,
+  selectors: string[],
+  kind: TargetDefinition['kind'],
+): string[] => {
+  if (selectors.length === 0) return [];
+  const gate = `${ACTIVE}${attr(targetId)} `;
+
+  return [
+    rule(
+      selectors.map((selector) => `${gate}${selector}`),
+      [
+        `  filter: blur(var(${blurVar(kind)})) !important;`,
+        '  -webkit-user-select: none !important;',
+        '  user-select: none !important;',
+      ].join('\n'),
+    ),
+
+    // Smooth fade, opt-in so that "instant" stays truly instant.
+    rule(
+      selectors.map(
+        (selector) => `${ACTIVE}${attr(STATE_TOKENS.animate)}${attr(targetId)} ${selector}`,
+      ),
+      `  transition: filter var(${CSS_VARS.transition}) ease !important;`,
+    ),
+
+    // Hover reveal for a single element.
+    rule(
+      selectors.map(
+        (selector) => `${ACTIVE}${attr(STATE_TOKENS.hover)}${attr(targetId)} ${selector}:hover`,
+      ),
+      [
+        '  filter: none !important;',
+        '  -webkit-user-select: auto !important;',
+        '  user-select: auto !important;',
+        `  transition-delay: var(${CSS_VARS.revealDelay}) !important;`,
+      ].join('\n'),
+    ),
+
+    // Hold-to-peek reveals everything at once; it must win over the rules above.
+    rule(
+      selectors.map((selector) => `html${attr(STATE_TOKENS.peek)} ${selector}`),
+      [
+        '  filter: none !important;',
+        '  -webkit-user-select: auto !important;',
+        '  user-select: auto !important;',
+        '  transition-delay: 0ms !important;',
+      ].join('\n'),
+    ),
+  ];
+};
 
 /**
  * Builds the complete stylesheet.
@@ -46,60 +107,9 @@ export const buildStylesheet = (
   ];
 
   for (const definition of definitions) {
-    const selectors = selectorsForTarget(definition, customSelectors);
-    if (selectors.length === 0) continue;
-
-    const enabled = `${ACTIVE}${attr(definition.id)} `;
-    const scoped = selectors.map((selector) => `${enabled}${selector}`);
-
     chunks.push(
-      rule(
-        scoped,
-        [
-          `  filter: blur(var(${blurVar(definition)})) !important;`,
-          '  -webkit-user-select: none !important;',
-          '  user-select: none !important;',
-        ].join('\n'),
-      ),
-    );
-
-    // Smooth fade, opt-in so that "instant" stays truly instant.
-    chunks.push(
-      rule(
-        selectors.map(
-          (selector) => `${ACTIVE}${attr(STATE_TOKENS.animate)}${attr(definition.id)} ${selector}`,
-        ),
-        `  transition: filter var(${CSS_VARS.transition}) ease !important;`,
-      ),
-    );
-
-    // Hover reveal for a single element.
-    chunks.push(
-      rule(
-        selectors.map(
-          (selector) =>
-            `${ACTIVE}${attr(STATE_TOKENS.hover)}${attr(definition.id)} ${selector}:hover`,
-        ),
-        [
-          '  filter: none !important;',
-          '  -webkit-user-select: auto !important;',
-          '  user-select: auto !important;',
-          `  transition-delay: var(${CSS_VARS.revealDelay}) !important;`,
-        ].join('\n'),
-      ),
-    );
-
-    // Hold-to-peek reveals everything at once; it must win over the rules above.
-    chunks.push(
-      rule(
-        selectors.map((selector) => `html${attr(STATE_TOKENS.peek)} ${selector}`),
-        [
-          '  filter: none !important;',
-          '  -webkit-user-select: auto !important;',
-          '  user-select: auto !important;',
-          '  transition-delay: 0ms !important;',
-        ].join('\n'),
-      ),
+      ...blocksFor(definition.id, selectorsForTarget(definition, customSelectors), definition.kind),
+      ...blocksFor(definition.id, mediaSelectorsForTarget(definition), 'graphic'),
     );
   }
 
