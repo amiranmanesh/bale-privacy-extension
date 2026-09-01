@@ -6,43 +6,45 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] — 2026-09-01
+
+First release. Chrome and Firefox packages built from one source tree.
+
 ### Added
 
-- Blur categories for chat-list text and avatars, conversation header, message
-  text, sender names in groups, media, sender avatars, the composer and profile
-  panels, each with its own switch.
-- Reveal on hover with a configurable delay, and hold-to-peek on Alt, Ctrl or
-  Shift.
-- Automatic blur when the window loses focus or after a period of inactivity;
-  both override the master switch.
-- `Alt+Shift+B` command to toggle blurring across every open tab.
-- Options page with per-category custom CSS selectors, settings import/export
-  and selector diagnostics.
-- English and Persian interfaces, with RTL support.
-- Chrome and Firefox MV3 packages built from one source tree.
-- `scripts/browser.mjs`, a driven Chromium with the built extension loaded and a
-  persistent profile, used to verify selectors against a live session.
+- **Nine independent blur categories**: chat-list names and previews, chat-list profile
+  pictures, the conversation header, message text, sender names in groups, photos and
+  videos and stickers, sender profile pictures, the composer, and profile and info
+  panels. Message timestamps, unread badges and reply counts stay readable on purpose.
+- **Reveal on hover**, with a configurable delay so passing the pointer across the
+  screen does not flash your messages.
+- **Hold to peek** — reveal the whole screen while Alt, Ctrl or Shift is held.
+- **Automatic blur** when the browser window loses focus, or after a period of
+  inactivity. Both override the master switch and suppress every reveal, so stepping
+  away always hides the screen.
+- **`Alt+Shift+B`** toggles blurring in every open tab.
+- **Native tooltips are suppressed** while blurring is on and reveal-on-hover is off.
+  Bale keeps the last-message preview in a `title` attribute, which the browser renders
+  outside the page where no stylesheet can reach it.
+- **Options page** with per-category custom CSS selectors, settings import and export,
+  and selector diagnostics for when a Bale update moves something.
+- **English and Persian** interfaces, with full RTL support.
 
-- Native tooltips of chat rows are suppressed while blurring is on and
-  reveal-on-hover is off, so the browser cannot render the hidden preview text
-  outside the page.
+### Privacy
 
-- Project website and hosted privacy policy, published to GitHub Pages from `site/`.
-- `CHROMEWEBSTORE.md` with the full store listing, permission justifications and
-  data-use answers, and `scripts/screenshots.mjs`, which renders store screenshots from
-  a fabricated conversation so no real data is ever published.
-- Issue forms for dead selectors, leaks, bugs and feature requests, plus SUPPORT.md and
-  a code of conduct.
+- One permission: `storage`. No host permissions, no `tabs`, no `activeTab`.
+- No network requests, no analytics, no remotely hosted code.
+- Settings are user preferences only. If browser sync is enabled, the browser roams them
+  between the user's own devices; nothing is ever sent to the authors or a third party.
 
-### Fixed
+### Internals
 
-- Selectors now anchor on the attributes Bale actually renders (`aria-label`,
-  `data-sentry-source-file`), verified against a logged-in session. The first
-  set was derived from the bundle alone and matched nothing.
-- Settings controls opt out of browser form restoration; without that, reopening
-  the options page could write stale form values back over saved settings.
-- Packages ship only the four icon sizes the manifest references, instead of the whole
-  icon set.
-- The privacy claim is now precise: the extension makes no network requests, but
-  settings live in `storage.sync`, which the browser roams between the user's own
-  devices when sync is enabled.
+- The blur is pure CSS: one generated stylesheet whose rules are gated on state tokens
+  in a `data-bale-privacy` attribute. No per-element JavaScript and no `MutationObserver`
+  over the message list.
+- Selectors anchor on `aria-label` and `data-sentry-source-file` attributes, verified
+  against a live logged-in session, because Bale's CSS Module class names are per-build
+  hashes.
+
+[unreleased]: https://github.com/amiranmanesh/bale-privacy-extension/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/amiranmanesh/bale-privacy-extension/releases/tag/v0.1.0
