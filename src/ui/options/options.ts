@@ -94,6 +94,7 @@ const buildTargetRows = (): void => {
     const textarea = document.createElement('textarea');
     textarea.id = `selectors-${definition.id}`;
     textarea.spellcheck = false;
+    textarea.autocomplete = 'off';
     textarea.placeholder = '[data-sentry-component="Example"] span';
     textarea.addEventListener('change', () => {
       if (!hydrating) void patchSettings({ customSelectors: collectCustomSelectors() });

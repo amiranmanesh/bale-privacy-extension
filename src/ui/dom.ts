@@ -49,6 +49,10 @@ export const createSwitchRow = (id: string, label: string, hint?: string): Switc
   const input = document.createElement('input');
   input.type = 'checkbox';
   input.id = id;
+  // Without this the browser restores the control's previous state when the
+  // page is reopened or restored, firing a change event that would overwrite
+  // the saved settings with stale form data.
+  input.autocomplete = 'off';
 
   const track = document.createElement('span');
   track.className = 'bp-switch__track';

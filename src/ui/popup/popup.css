@@ -1,5 +1,5 @@
 .bp-popup {
-  width: 300px;
+  width: 320px;
   padding: 12px;
   display: grid;
   gap: 12px;
@@ -19,6 +19,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: none;
+}
+
+.bp-popup .bp-row__label {
+  white-space: nowrap;
+}
+
+.bp-popup input[type='range'] {
+  width: 110px;
 }
 
 .bp-range output {

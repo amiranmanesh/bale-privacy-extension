@@ -30,7 +30,7 @@
             </span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="enabled" />
+            <input type="checkbox" autocomplete="off" id="enabled" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
@@ -40,7 +40,7 @@
             Blur strength
           </label>
           <span class="bp-range">
-            <input type="range" id="blurRadius" min="1" max="24" step="1" />
+            <input type="range" autocomplete="off" id="blurRadius" min="1" max="24" step="1" />
             <output id="blurRadiusValue"></output>
           </span>
         </div>
@@ -50,7 +50,7 @@
             <span data-i18n="setting_animate">Fade in and out</span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="animate" />
+            <input type="checkbox" autocomplete="off" id="animate" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
@@ -67,7 +67,7 @@
             </span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="revealOnHover" />
+            <input type="checkbox" autocomplete="off" id="revealOnHover" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
@@ -77,7 +77,14 @@
             Hover delay
           </label>
           <span class="bp-range">
-            <input type="number" id="revealDelayMs" min="0" max="2000" step="50" />
+            <input
+              type="number"
+              autocomplete="off"
+              id="revealDelayMs"
+              min="0"
+              max="2000"
+              step="50"
+            />
             <span class="bp-hint">ms</span>
           </span>
         </div>
@@ -87,14 +94,14 @@
             <span data-i18n="setting_holdKeyReveal">Hold a key to reveal everything</span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="holdKeyReveal" />
+            <input type="checkbox" autocomplete="off" id="holdKeyReveal" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
 
         <div class="bp-row">
           <label class="bp-row__label" for="holdKey" data-i18n="setting_holdKey">Reveal key</label>
-          <select id="holdKey">
+          <select id="holdKey" autocomplete="off">
             <option value="Alt">Alt / Option</option>
             <option value="Control">Ctrl</option>
             <option value="Shift">Shift</option>
@@ -113,7 +120,7 @@
             </span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="blurOnWindowBlur" />
+            <input type="checkbox" autocomplete="off" id="blurOnWindowBlur" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
@@ -123,7 +130,7 @@
             <span data-i18n="setting_blurOnIdle">Blur after a period of inactivity</span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="blurOnIdle" />
+            <input type="checkbox" autocomplete="off" id="blurOnIdle" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
@@ -133,7 +140,7 @@
             Inactivity timeout
           </label>
           <span class="bp-range">
-            <input type="number" id="idleSeconds" min="5" max="3600" step="5" />
+            <input type="number" autocomplete="off" id="idleSeconds" min="5" max="3600" step="5" />
             <span class="bp-hint" data-i18n="unit_seconds">s</span>
           </span>
         </div>
@@ -160,7 +167,7 @@
             </span>
           </label>
           <span class="bp-switch">
-            <input type="checkbox" id="debug" />
+            <input type="checkbox" autocomplete="off" id="debug" />
             <span class="bp-switch__track"></span>
           </span>
         </div>
