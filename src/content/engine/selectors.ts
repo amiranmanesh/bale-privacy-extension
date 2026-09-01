@@ -49,7 +49,13 @@ export const TARGET_DEFINITIONS: TargetDefinition[] = [
     // `<div><span dir="auto">Name</span>: </div>` — the wrapper is matched so
     // the trailing colon blurs with the name instead of hanging there alone.
     // The timestamp and the unread badge match none of these, and stay sharp.
-    selectors: [...within(DIALOG_ROW, ['bdi', '[dir] span', 'span[dir]', 'div:has(> span[dir])'])],
+    selectors: [
+      ...within(DIALOG_ROW, ['bdi', '[dir] span', 'span[dir]', 'div:has(> span[dir])']),
+      // The archive row is not a dialog-item: it sits above the list and its
+      // subtitle names the conversations inside it. Its own <bdi> is the
+      // literal word "Archive", so that stays readable and the entry findable.
+      '[dir]:has(> [data-sentry-component="ArchiveAvatar"]) span',
+    ],
   },
   {
     id: 'sidebarAvatars',
