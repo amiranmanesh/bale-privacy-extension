@@ -33,6 +33,12 @@ describe('buildManifest', () => {
     expect(buildManifest('chrome').minimum_chrome_version).toBe('111');
   });
 
+  it('declares no data collection and supports Firefox for Android', () => {
+    const settings = buildManifest('firefox').browser_specific_settings;
+    expect(settings.gecko.data_collection_permissions).toEqual({ required: ['none'] });
+    expect(settings.gecko_android.strict_min_version).toBe('121.0');
+  });
+
   it('declares to AMO that it collects nothing', () => {
     const gecko = buildManifest('firefox').browser_specific_settings.gecko;
     expect(gecko.data_collection_permissions).toEqual({ required: ['none'] });

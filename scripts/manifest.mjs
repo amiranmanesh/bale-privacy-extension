@@ -81,6 +81,10 @@ export function buildManifest(target, version = pkg.version) {
         // so the answer is the sentinel "none" rather than a category list.
         data_collection_permissions: { required: ['none'] },
       },
+      // Firefox for Android installs an add-on only if it declares support
+      // explicitly. The UI is a popup and a stylesheet, so there is nothing
+      // desktop-specific to hold back.
+      gecko_android: { strict_min_version: '121.0' },
     };
   } else {
     throw new Error(`Unknown target: ${target}`);
