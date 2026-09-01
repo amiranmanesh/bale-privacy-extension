@@ -56,10 +56,16 @@ Not published yet — store links appear here and on the [website](https://amira
 release clears review. Progress and the submission runbook live in
 [the wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
 
+### From a release
+
+Every tag publishes ready-made packages on the [releases page](https://github.com/amiranmanesh/bale-privacy-extension/releases) — the
+same artefacts that go to the stores, built from the tagged source by CI. Download the
+zip for your browser, unzip it, and load the folder unpacked with the steps below.
+
 ### From source
 
 ```bash
-git clone <this-repo> bale-privacy
+git clone https://github.com/amiranmanesh/bale-privacy-extension.git bale-privacy
 cd bale-privacy
 npm install
 npm run build          # builds dist/chrome and dist/firefox
