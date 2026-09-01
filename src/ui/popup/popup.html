@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bale Privacy</title>
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body class="bp-popup">
+    <header class="bp-popup__header">
+      <img src="icons/icon-48.png" alt="" width="28" height="28" />
+      <div>
+        <h1 data-i18n="popup_title">Bale Privacy</h1>
+        <p class="bp-hint" data-i18n="popup_subtitle">Blur what is on screen</p>
+      </div>
+    </header>
+
+    <section class="bp-card">
+      <div class="bp-row">
+        <label class="bp-row__label" for="enabled">
+          <strong data-i18n="setting_enabled">Blur enabled</strong>
+          <span class="bp-hint" id="shortcut-hint"></span>
+        </label>
+        <span class="bp-switch">
+          <input type="checkbox" id="enabled" />
+          <span class="bp-switch__track"></span>
+        </span>
+      </div>
+
+      <div class="bp-row">
+        <label class="bp-row__label" for="blurRadius" data-i18n="setting_blurRadius">
+          Blur strength
+        </label>
+        <span class="bp-range">
+          <input type="range" id="blurRadius" min="1" max="24" step="1" />
+          <output id="blurRadiusValue"></output>
+        </span>
+      </div>
+
+      <div class="bp-row">
+        <label class="bp-row__label" for="revealOnHover">
+          <span data-i18n="setting_revealOnHover">Reveal on hover</span>
+        </label>
+        <span class="bp-switch">
+          <input type="checkbox" id="revealOnHover" />
+          <span class="bp-switch__track"></span>
+        </span>
+      </div>
+    </section>
+
+    <section class="bp-card">
+      <h2 data-i18n="section_targets">What to blur</h2>
+      <div id="targets" class="bp-targets"></div>
+    </section>
+
+    <footer class="bp-popup__footer">
+      <button type="button" id="openOptions" data-i18n="popup_openOptions">All settings</button>
+      <a
+        href="https://web.bale.ai/chat"
+        target="_blank"
+        rel="noreferrer noopener"
+        data-i18n="popup_openBale"
+        >Open Bale</a
+      >
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

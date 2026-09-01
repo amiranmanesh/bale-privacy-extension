@@ -1,0 +1,41 @@
+.bp-popup {
+  width: 300px;
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.bp-popup__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bp-popup__header img {
+  border-radius: 8px;
+}
+
+.bp-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bp-range output {
+  min-width: 34px;
+  text-align: end;
+  color: var(--bp-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.bp-targets {
+  display: grid;
+  gap: 6px;
+}
+
+.bp-popup__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}

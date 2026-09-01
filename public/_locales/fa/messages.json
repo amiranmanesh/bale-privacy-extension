@@ -1,0 +1,78 @@
+{
+  "extension_name": {
+    "message": "حریم خصوصی برای وب بله",
+    "description": "نام افزونه"
+  },
+  "extension_description": {
+    "message": "گفتگوها، پیش‌نمایش پیام‌ها، تصاویر و عکس‌های پروفایل را در وب بله محو می‌کند تا زمانی که نشانگر را روی آن‌ها ببرید. همه‌چیز روی دستگاه شما می‌ماند."
+  },
+  "action_title": { "message": "حریم خصوصی بله" },
+  "command_toggle": { "message": "روشن یا خاموش کردن محو کردن" },
+
+  "popup_title": { "message": "حریم خصوصی بله" },
+  "popup_subtitle": { "message": "آنچه روی صفحه است را محو کنید" },
+  "popup_openOptions": { "message": "همهٔ تنظیمات" },
+  "popup_openBale": { "message": "باز کردن بله" },
+  "popup_shortcutHint": { "message": "میان‌بر: Alt+Shift+B" },
+
+  "section_general": { "message": "عمومی" },
+  "section_reveal": { "message": "نمایش دادن" },
+  "section_auto": { "message": "محو کردن خودکار" },
+  "section_targets": { "message": "چه چیزی محو شود" },
+  "section_advanced": { "message": "سلکتورهای پیشرفته" },
+  "section_data": { "message": "پشتیبان‌گیری" },
+
+  "setting_enabled": { "message": "محو کردن فعال" },
+  "setting_enabled_hint": { "message": "با میان‌بر صفحه‌کلید از هر جا تغییرش دهید." },
+  "setting_blurRadius": { "message": "شدت محو" },
+  "setting_animate": { "message": "محو و آشکار شدن نرم" },
+  "setting_revealOnHover": { "message": "نمایش با نگه داشتن نشانگر" },
+  "setting_revealOnHover_hint": {
+    "message": "نشانگر را روی عنصر محوشده ببرید تا خوانا شود."
+  },
+  "setting_revealDelayMs": { "message": "تأخیر نمایش" },
+  "setting_holdKeyReveal": { "message": "نگه داشتن یک کلید برای نمایش همه" },
+  "setting_holdKey": { "message": "کلید نمایش" },
+  "setting_blurOnWindowBlur": { "message": "محو کردن وقتی پنجره از حالت فعال خارج می‌شود" },
+  "setting_blurOnWindowBlur_hint": {
+    "message": "تا وقتی پنجرهٔ دیگری جلوتر باشد، کلید اصلی را نادیده می‌گیرد."
+  },
+  "setting_blurOnIdle": { "message": "محو کردن پس از مدتی بی‌کاری" },
+  "setting_idleSeconds": { "message": "مدت بی‌کاری" },
+  "setting_debug": { "message": "ثبت گزارش سلکتورها" },
+  "setting_debug_hint": {
+    "message": "تعداد عناصر منطبق با هر سلکتور را در کنسول صفحهٔ بله چاپ می‌کند."
+  },
+
+  "target_sidebarText": { "message": "نام‌ها و پیش‌نمایش‌های فهرست گفتگو" },
+  "target_sidebarAvatars": { "message": "عکس‌های پروفایل در فهرست گفتگو" },
+  "target_headerPeer": { "message": "سربرگ گفتگو" },
+  "target_messageText": { "message": "متن پیام‌ها" },
+  "target_messageMedia": { "message": "عکس، ویدیو و استیکر" },
+  "target_messageAvatars": { "message": "عکس پروفایل فرستنده" },
+  "target_composer": { "message": "متنی که می‌نویسید" },
+  "target_profileMedia": { "message": "پنل پروفایل و اطلاعات" },
+
+  "options_title": { "message": "تنظیمات حریم خصوصی بله" },
+  "options_subtitle": {
+    "message": "همه‌چیز در مرورگر شما ذخیره می‌شود. هیچ داده‌ای جایی ارسال نمی‌شود."
+  },
+  "advanced_hint": {
+    "message": "ساختار صفحهٔ بله گاهی تغییر می‌کند. برای گسترش هر دسته، در هر خط یک سلکتور CSS اضافه کنید."
+  },
+
+  "action_export": { "message": "خروجی گرفتن از تنظیمات" },
+  "action_import": { "message": "وارد کردن تنظیمات" },
+  "action_reset": { "message": "بازگرداندن به پیش‌فرض" },
+
+  "status_exported": { "message": "تنظیمات خروجی گرفته شد." },
+  "status_imported": { "message": "تنظیمات وارد شد." },
+  "status_importFailed": { "message": "این فایل خوانده نشد." },
+  "status_reset": { "message": "تنظیمات به پیش‌فرض بازگشت." },
+  "status_selectorRejected": { "message": "برخی سلکتورها پذیرفته نشدند: " },
+
+  "unit_seconds": { "message": "ثانیه" },
+  "footer_disclaimer": {
+    "message": "پروژه‌ای مستقل و متن‌باز. وابسته به بله نیست و از سوی آن تأیید نشده است."
+  }
+}

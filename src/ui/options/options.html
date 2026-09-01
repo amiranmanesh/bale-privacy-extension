@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bale Privacy — Settings</title>
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body class="bp-options">
+    <header class="bp-options__header">
+      <img src="icons/icon-128.png" alt="" width="44" height="44" />
+      <div>
+        <h1 data-i18n="options_title">Bale Privacy settings</h1>
+        <p class="bp-hint" data-i18n="options_subtitle">
+          Everything is stored in your browser. Nothing is ever sent anywhere.
+        </p>
+      </div>
+    </header>
+
+    <main class="bp-options__grid">
+      <section class="bp-card">
+        <h2 data-i18n="section_general">General</h2>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="enabled">
+            <strong data-i18n="setting_enabled">Blur enabled</strong>
+            <span class="bp-hint" data-i18n="setting_enabled_hint">
+              Toggle from anywhere with the keyboard shortcut.
+            </span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="enabled" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="blurRadius" data-i18n="setting_blurRadius">
+            Blur strength
+          </label>
+          <span class="bp-range">
+            <input type="range" id="blurRadius" min="1" max="24" step="1" />
+            <output id="blurRadiusValue"></output>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="animate">
+            <span data-i18n="setting_animate">Fade in and out</span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="animate" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+      </section>
+
+      <section class="bp-card">
+        <h2 data-i18n="section_reveal">Revealing</h2>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="revealOnHover">
+            <span data-i18n="setting_revealOnHover">Reveal on hover</span>
+            <span class="bp-hint" data-i18n="setting_revealOnHover_hint">
+              Move the pointer over a blurred element to read it.
+            </span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="revealOnHover" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="revealDelayMs" data-i18n="setting_revealDelayMs">
+            Hover delay
+          </label>
+          <span class="bp-range">
+            <input type="number" id="revealDelayMs" min="0" max="2000" step="50" />
+            <span class="bp-hint">ms</span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="holdKeyReveal">
+            <span data-i18n="setting_holdKeyReveal">Hold a key to reveal everything</span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="holdKeyReveal" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="holdKey" data-i18n="setting_holdKey">Reveal key</label>
+          <select id="holdKey">
+            <option value="Alt">Alt / Option</option>
+            <option value="Control">Ctrl</option>
+            <option value="Shift">Shift</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="bp-card">
+        <h2 data-i18n="section_auto">Automatic blur</h2>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="blurOnWindowBlur">
+            <span data-i18n="setting_blurOnWindowBlur">Blur when the window loses focus</span>
+            <span class="bp-hint" data-i18n="setting_blurOnWindowBlur_hint">
+              Overrides the master switch while another window is in front.
+            </span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="blurOnWindowBlur" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="blurOnIdle">
+            <span data-i18n="setting_blurOnIdle">Blur after a period of inactivity</span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="blurOnIdle" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="idleSeconds" data-i18n="setting_idleSeconds">
+            Inactivity timeout
+          </label>
+          <span class="bp-range">
+            <input type="number" id="idleSeconds" min="5" max="3600" step="5" />
+            <span class="bp-hint" data-i18n="unit_seconds">s</span>
+          </span>
+        </div>
+      </section>
+
+      <section class="bp-card">
+        <h2 data-i18n="section_targets">What to blur</h2>
+        <div id="targets" class="bp-targets"></div>
+      </section>
+
+      <section class="bp-card bp-card--wide">
+        <h2 data-i18n="section_advanced">Advanced selectors</h2>
+        <p class="bp-hint" data-i18n="advanced_hint">
+          Bale changes its markup from time to time. Add one CSS selector per line to extend a
+          category without waiting for an update.
+        </p>
+        <div id="customSelectors" class="bp-selectors"></div>
+
+        <div class="bp-row">
+          <label class="bp-row__label" for="debug">
+            <span data-i18n="setting_debug">Log selector diagnostics</span>
+            <span class="bp-hint" data-i18n="setting_debug_hint">
+              Prints how many elements each selector matches to the Bale page console.
+            </span>
+          </label>
+          <span class="bp-switch">
+            <input type="checkbox" id="debug" />
+            <span class="bp-switch__track"></span>
+          </span>
+        </div>
+      </section>
+
+      <section class="bp-card bp-card--wide">
+        <h2 data-i18n="section_data">Backup</h2>
+        <div class="bp-actions">
+          <button type="button" id="export" data-i18n="action_export">Export settings</button>
+          <button type="button" id="import" data-i18n="action_import">Import settings</button>
+          <button type="button" id="reset" class="bp-button--danger" data-i18n="action_reset">
+            Reset to defaults
+          </button>
+          <input type="file" id="importFile" accept="application/json" hidden />
+        </div>
+        <p class="bp-status" id="status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer class="bp-options__footer">
+      <p class="bp-hint">
+        <span data-i18n="footer_disclaimer">
+          Independent open-source project. Not affiliated with, endorsed by, or connected to Bale.
+        </span>
+        <span id="version"></span>
+      </p>
+    </footer>
+
+    <script src="options.js"></script>
+  </body>
+</html>
