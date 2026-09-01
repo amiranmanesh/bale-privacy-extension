@@ -3,6 +3,9 @@
   <h1>Privacy for Bale Web</h1>
   <p><strong>Blur chats, previews, media and profile pictures on <a href="https://web.bale.ai/chat">web.bale.ai</a> until you actually need to read them.</strong></p>
   <p>
+    <strong>English</strong> · <a href="README.fa.md">فارسی</a>
+  </p>
+  <p>
     <a href="https://amiranmanesh.github.io/bale-privacy-extension">Website</a> ·
     <a href="https://github.com/amiranmanesh/bale-privacy-extension/wiki">Wiki</a> ·
     <a href="#install">Install</a> ·
@@ -50,17 +53,42 @@ endorsed by, or connected to Bale.
 
 ## Install
 
+> **فارسی:** راهنمای کامل فارسی در [README.fa.md](README.fa.md) و در
+> [صفحهٔ فارسی سایت](https://amiranmanesh.github.io/bale-privacy-extension/fa/) هست.
+
 ### From the stores
 
-Not published yet — store links appear here and on the [website](https://amiranmanesh.github.io/bale-privacy-extension) once the first
+Not published yet — links appear here and on the [website](https://amiranmanesh.github.io/bale-privacy-extension) once the first
 release clears review. Progress and the submission runbook live in
 [the wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
 
-### From a release
+### From a release (no build tools needed)
 
 Every tag publishes ready-made packages on the [releases page](https://github.com/amiranmanesh/bale-privacy-extension/releases) — the
-same artefacts that go to the stores, built from the tagged source by CI. Download the
-zip for your browser, unzip it, and load the folder unpacked with the steps below.
+same artefacts that go to the stores, built from the tagged source by CI.
+
+**Chrome, Edge, Brave, Opera**
+
+1. Download `bale-privacy-<version>-chrome.zip` from the [latest release](https://github.com/amiranmanesh/bale-privacy-extension/releases/latest).
+2. Unzip it, and move the resulting folder somewhere permanent — your Documents folder,
+   for example. Chrome reads the extension from that path on every start, so deleting the
+   folder uninstalls it.
+3. Open `chrome://extensions` (Edge: `edge://extensions`, Brave: `brave://extensions`).
+4. Turn on **Developer mode**, top right.
+5. Click **Load unpacked** and select the unzipped folder — the one containing
+   `manifest.json`.
+6. Optional: click the puzzle-piece icon in the toolbar and pin the extension.
+7. Open <https://web.bale.ai/chat>. The blur is on by default.
+
+**Firefox**
+
+1. Download `bale-privacy-<version>-firefox.zip` from the [latest release](https://github.com/amiranmanesh/bale-privacy-extension/releases/latest).
+2. Open `about:debugging#/runtime/this-firefox`.
+3. Click **Load Temporary Add-on…** and select the ZIP file itself.
+4. Open <https://web.bale.ai/chat>.
+
+Firefox removes temporary add-ons when it closes, so this has to be repeated each session
+until the add-on is signed and published on addons.mozilla.org.
 
 ### From source
 
@@ -71,13 +99,8 @@ npm install
 npm run build          # builds dist/chrome and dist/firefox
 ```
 
-**Chrome / Edge / Brave** — open `chrome://extensions`, turn on _Developer
-mode_, choose _Load unpacked_ and pick `dist/chrome`.
-
-**Firefox** — open `about:debugging#/runtime/this-firefox`, choose _Load
-Temporary Add-on_ and pick `dist/firefox/manifest.json`.
-
-Then open <https://web.bale.ai/chat>. The blur is on by default.
+Then load `dist/chrome` or `dist/firefox` with the steps above. After a rebuild, press
+the reload icon on the extension card, then reload the Bale tab.
 
 ## Usage
 
@@ -150,33 +173,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [SUPPORT.md](SUPPORT.md).
 
 <div dir="rtl">
 
-**حریم خصوصی برای وب بله** — افزونه‌ای برای کروم و فایرفاکس که محتوای حساس را در
-<a href="https://web.bale.ai/chat">web.bale.ai</a> محو می‌کند: نام و پیش‌نمایش گفتگوها،
-سربرگ گفتگو، متن پیام‌ها، عکس و ویدیو و استیکر، عکس‌های پروفایل، و در صورت تمایل
-متنی که در حال نوشتنش هستید. با بردن نشانگر روی هر عنصر، همان یکی خوانا می‌شود.
+نسخهٔ کامل فارسی این راهنما — شامل قابلیت‌ها، راهنمای گام‌به‌گام نصب از روی ریلیز، و
+توضیح مجوزها — در **[README.fa.md](README.fa.md)** است.
 
-**ویژگی‌ها**
-
-- هر دسته سوییچ مستقل خودش را دارد.
-- نگه داشتن کلید Alt همهٔ صفحه را موقتاً آشکار می‌کند.
-- محو خودکار وقتی پنجره از حالت فعال خارج می‌شود یا مدتی بی‌کار می‌مانید.
-- میان‌بر <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> برای روشن و خاموش کردن.
-- رابط کاربری کامل راست‌به‌چپ.
-
-**حریم خصوصی**
-
-افزونه فقط از مجوز `storage` استفاده می‌کند، هیچ درخواست شبکه‌ای نمی‌فرستد و هیچ
-داده‌ای را جایی ارسال یا ذخیره نمی‌کند. همهٔ تنظیمات در مرورگر خودتان می‌ماند.
-
-**نصب از روی کد**
-
-```bash
-npm install && npm run build
-```
-
-سپس در کروم پوشهٔ `dist/chrome` و در فایرفاکس فایل `dist/firefox/manifest.json`
-را بارگذاری کنید.
-
-این پروژه مستقل و متن‌باز است و هیچ وابستگی‌ای به شرکت بله ندارد.
+مستندات فارسی در [ویکی](https://github.com/amiranmanesh/bale-privacy-extension/wiki) و
+[صفحهٔ فارسی سایت](https://amiranmanesh.github.io/bale-privacy-extension/fa/) هم موجود است.
 
 </div>

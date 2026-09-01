@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,6 +10,7 @@
     />
     <link rel="icon" href="assets/icon-128.png" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="alternate" hreflang="fa" href="fa/index.html" />
     <meta property="og:title" content="Privacy for Bale Web" />
     <meta
       property="og:description"
@@ -27,6 +28,10 @@
           <a href="#features">Features</a>
           <a href="privacy.html">Privacy</a>
           <a href="https://github.com/amiranmanesh/bale-privacy-extension">GitHub</a>
+          <span class="lang">
+            <a href="index.html" aria-current="true" hreflang="en">EN</a>
+            <a href="fa/index.html" hreflang="fa">فا</a>
+          </span>
         </nav>
       </div>
     </header>
@@ -135,29 +140,61 @@
       <section id="install" class="wrap">
         <h2>Install</h2>
         <p class="section-lead">
-          Store listings are linked here once the first release clears review. Until then, build it
-          yourself — it takes a minute.
+          Not on the stores yet. The releases page carries ready-made packages — the same artefacts
+          that go to the stores, built from the tagged source by CI — so you do not need any build
+          tools.
         </p>
+
+        <h3>Chrome, Edge, Brave, Opera</h3>
+        <ol class="steps">
+          <li>
+            Download <code>bale-privacy-&lt;version&gt;-chrome.zip</code> from the
+            <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
+              >latest release</a
+            >.
+          </li>
+          <li>
+            Unzip it, and move the resulting folder somewhere permanent — your Documents folder, for
+            example. Chrome loads the extension from that path every time it starts, so deleting the
+            folder uninstalls the extension.
+          </li>
+          <li>Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>).</li>
+          <li>Turn on <strong>Developer mode</strong>, top right.</li>
+          <li>
+            Click <strong>Load unpacked</strong> and select the unzipped folder — the one containing
+            <code>manifest.json</code>.
+          </li>
+          <li>Optional: click the puzzle-piece icon in the toolbar and pin the extension.</li>
+          <li>
+            Open <a href="https://web.bale.ai/chat">web.bale.ai/chat</a>. Blurring is on by default.
+          </li>
+        </ol>
+
+        <h3>Firefox</h3>
+        <ol class="steps">
+          <li>
+            Download <code>bale-privacy-&lt;version&gt;-firefox.zip</code> from the
+            <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
+              >latest release</a
+            >.
+          </li>
+          <li>Open <code>about:debugging#/runtime/this-firefox</code>.</li>
+          <li>Click <strong>Load Temporary Add-on…</strong> and select the ZIP file itself.</li>
+          <li>Open <a href="https://web.bale.ai/chat">web.bale.ai/chat</a>.</li>
+        </ol>
+        <p class="note">
+          Firefox removes temporary add-ons when it closes, so this has to be repeated each session
+          until the add-on is signed and published on addons.mozilla.org.
+        </p>
+
+        <h3>Build it yourself</h3>
         <pre><code>git clone https://github.com/amiranmanesh/bale-privacy-extension.git
 cd bale-privacy-extension
 npm install
 npm run build</code></pre>
-        <div class="grid">
-          <div class="card">
-            <h3>Chrome, Edge, Brave</h3>
-            <p>
-              Open <code>chrome://extensions</code>, turn on Developer mode, choose
-              <em>Load unpacked</em> and pick <code>dist/chrome</code>.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Firefox</h3>
-            <p>
-              Open <code>about:debugging#/runtime/this-firefox</code>, choose
-              <em>Load Temporary Add-on</em> and pick <code>dist/firefox/manifest.json</code>.
-            </p>
-          </div>
-        </div>
+        <p class="section-lead" style="margin-bottom: 0">
+          Then load <code>dist/chrome</code> or <code>dist/firefox</code> with the steps above.
+        </p>
       </section>
 
       <section class="wrap">
@@ -184,24 +221,10 @@ npm run build</code></pre>
       <section class="wrap rtl" dir="rtl" lang="fa">
         <h2>فارسی</h2>
         <p class="section-lead">
-          افزونه‌ای برای کروم و فایرفاکس که در وب بلهٔ فارسی، نام گفتگوها، پیش‌نمایش پیام‌ها، متن
-          پیام‌ها، عکس‌ها و تصاویر پروفایل را محو می‌کند. با بردن نشانگر روی هر عنصر، همان یکی خوانا
-          می‌شود.
+          نسخهٔ کامل فارسی این صفحه، شامل راهنمای گام‌به‌گام نصب، در
+          <a href="fa/index.html">صفحهٔ فارسی</a> در دسترس است.
         </p>
-        <div class="grid">
-          <div class="card">
-            <h3>هر دسته سوییچ جداگانه</h3>
-            <p>نام‌ها، پیش‌نمایش‌ها، متن پیام، نام فرستنده، عکس‌ها و آواتارها — هرکدام مستقل.</p>
-          </div>
-          <div class="card">
-            <h3>محو خودکار</h3>
-            <p>وقتی پنجره از حالت فعال خارج شود یا مدتی بی‌کار بمانید، دوباره محو می‌شود.</p>
-          </div>
-          <div class="card">
-            <h3>بدون ارسال داده</h3>
-            <p>تنها مجوزش ذخیره‌سازی تنظیمات است. هیچ درخواست شبکه‌ای نمی‌فرستد.</p>
-          </div>
-        </div>
+        <p><a class="button button--primary" href="fa/index.html">رفتن به نسخهٔ فارسی</a></p>
       </section>
     </main>
 

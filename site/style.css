@@ -253,3 +253,81 @@ footer .wrap {
   padding: 8px 10px;
   text-align: start;
 }
+
+/* Language switcher ------------------------------------------------------- */
+
+.lang {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  font-size: 13px;
+  margin-inline-start: 8px;
+}
+
+.lang a {
+  padding: 3px 11px;
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.lang a[aria-current='true'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Numbered install steps -------------------------------------------------- */
+
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-inline-start: 40px;
+  min-height: 28px;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+kbd {
+  font-family: inherit;
+  font-size: 0.92em;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 1px 5px;
+  background: var(--panel);
+}
+
+/* Persian pages ----------------------------------------------------------- */
+
+html[dir='rtl'] body {
+  line-height: 1.85;
+}
+
+html[dir='rtl'] pre,
+html[dir='rtl'] code {
+  direction: ltr;
+  text-align: start;
+}
