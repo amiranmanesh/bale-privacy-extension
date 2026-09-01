@@ -9,3 +9,5 @@ coverage/
 .vscode/
 .idea/
 web-ext-artifacts/
+.browser-profile/
+probe-out/

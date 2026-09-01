@@ -3,7 +3,18 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'release/**', 'coverage/**', 'node_modules/**', 'tools/dom-probe.js'] },
+  {
+    ignores: [
+      'dist/**',
+      'release/**',
+      'coverage/**',
+      'node_modules/**',
+      // Scratch snippets evaluated inside a page, and the driven browser's profile.
+      'probe-out/**',
+      '.browser-profile/**',
+      'tools/dom-probe.js',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

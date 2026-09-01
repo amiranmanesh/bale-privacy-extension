@@ -22,6 +22,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "browser": "node scripts/browser.mjs open",
+    "browser:eval": "node scripts/browser.mjs eval",
+    "browser:shot": "node scripts/browser.mjs shot",
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
@@ -32,6 +35,7 @@
     "eslint": "^9.17.0",
     "globals": "^15.14.0",
     "jsdom": "^25.0.1",
+    "playwright": "^1.62.1",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.20.0",
