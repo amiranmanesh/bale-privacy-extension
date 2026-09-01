@@ -1,0 +1,32 @@
+name: Something private is still visible
+description: Content the categories should cover is readable while blurring is on
+labels: [leak, bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Timestamps, unread badges and reply counts stay sharp on purpose. Anything else
+        that is readable while its category is switched on is a gap worth fixing.
+  - type: textarea
+    id: what
+    attributes:
+      label: What is visible
+      description: Where on the page, and under which switch you expected it to fall.
+      placeholder: The name in a forwarded-message header stays readable with "Message text" on.
+    validations:
+      required: true
+  - type: textarea
+    id: leakscan
+    attributes:
+      label: Leak scan output
+      description: >-
+        Paste tools/leak-scan.js into the Bale page console and copy the table. It prints
+        DOM paths and counts only — no message content.
+      render: text
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and extension version
+      placeholder: Firefox 135 / extension 0.1.0
+    validations:
+      required: true

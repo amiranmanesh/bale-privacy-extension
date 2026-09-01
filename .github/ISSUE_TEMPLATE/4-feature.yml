@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest something the extension should do
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Two constraints worth knowing before you write: the extension asks for a single
+        `storage` permission and makes no network requests, and the blur is implemented
+        purely in CSS. Suggestions that keep both are much easier to land.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve
+      description: The situation you are in, not the implementation you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you would like it to do
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Does it fit the project's constraints
+      options:
+        - label: It does not need a new permission
+        - label: It does not need a network request

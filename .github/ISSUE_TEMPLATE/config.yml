@@ -1,5 +1,11 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Documentation and troubleshooting
+    url: https://github.com/amiranmanesh/bale-privacy-extension/wiki
+    about: Installation, every setting explained, and the troubleshooting guide
+  - name: Fix a broken selector yourself
+    url: https://github.com/amiranmanesh/bale-privacy-extension/wiki/Selector-Maintenance
+    about: The options page lets you add your own CSS selector without waiting for a release
   - name: Security issue
-    url: https://github.com/security/advisories
-    about: Please report vulnerabilities privately, see SECURITY.md
+    url: https://github.com/amiranmanesh/bale-privacy-extension/security/advisories/new
+    about: Please report vulnerabilities privately

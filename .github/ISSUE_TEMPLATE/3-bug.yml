@@ -1,0 +1,38 @@
+name: Bug
+description: Something else is broken — the popup, the shortcut, the settings, the layout
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open web.bale.ai
+        2. …
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors, if any
+      description: Bale tab, or the extension's own popup / options page.
+      render: text
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, operating system and extension version
+      placeholder: Chrome 141 on macOS 15 / extension 0.1.0
+    validations:
+      required: true
