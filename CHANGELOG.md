@@ -9,8 +9,8 @@ All notable changes to this project are documented here. The format follows
 ### Added
 
 - Blur categories for chat-list text and avatars, conversation header, message
-  text, media, sender avatars, the composer and profile panels, each with its
-  own switch.
+  text, sender names in groups, media, sender avatars, the composer and profile
+  panels, each with its own switch.
 - Reveal on hover with a configurable delay, and hold-to-peek on Alt, Ctrl or
   Shift.
 - Automatic blur when the window loses focus or after a period of inactivity;
@@ -20,3 +20,13 @@ All notable changes to this project are documented here. The format follows
   and selector diagnostics.
 - English and Persian interfaces, with RTL support.
 - Chrome and Firefox MV3 packages built from one source tree.
+- `scripts/browser.mjs`, a driven Chromium with the built extension loaded and a
+  persistent profile, used to verify selectors against a live session.
+
+### Fixed
+
+- Selectors now anchor on the attributes Bale actually renders (`aria-label`,
+  `data-sentry-source-file`), verified against a logged-in session. The first
+  set was derived from the bundle alone and matched nothing.
+- Settings controls opt out of browser form restoration; without that, reopening
+  the options page could write stale form values back over saved settings.

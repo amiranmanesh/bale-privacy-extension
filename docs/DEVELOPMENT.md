@@ -31,6 +31,22 @@ extension card, then reload the Bale tab.
 → `dist/firefox/manifest.json`. Temporary add-ons are removed when Firefox
 closes.
 
+## The driven browser
+
+Selector work needs a logged-in session, so `scripts/browser.mjs` drives a real
+Chromium (Playwright's, installed as a dev dependency) with `dist/chrome`
+loaded and its profile in `.browser-profile/` — log in once and every later
+command reuses the session. It exposes CDP on port 9222, which is how `eval`,
+`shot`, `hover` and `extension` attach to the same window.
+
+```bash
+npm run build && npm run browser     # leave this running, log in
+node scripts/browser.mjs eval probe-out/verify.js
+```
+
+After changing the extension, rebuild and restart the window: an unpacked
+extension is only re-read when the browser starts.
+
 ## Debugging
 
 - **Content script** — DevTools on the Bale tab. Turn on _Log selector
