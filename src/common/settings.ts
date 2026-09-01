@@ -15,8 +15,7 @@ export const DEFAULT_SETTINGS: Settings = {
   schemaVersion: SCHEMA_VERSION,
   enabled: true,
   targets: {
-    sidebarNames: true,
-    sidebarPreviews: true,
+    sidebarText: true,
     sidebarAvatars: true,
     headerPeer: true,
     messageText: true,

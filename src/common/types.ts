@@ -4,8 +4,7 @@
  * state tokens, so renaming one requires a settings migration.
  */
 export const TARGET_IDS = [
-  'sidebarNames',
-  'sidebarPreviews',
+  'sidebarText',
   'sidebarAvatars',
   'headerPeer',
   'messageText',
