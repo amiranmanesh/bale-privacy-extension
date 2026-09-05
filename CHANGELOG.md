@@ -6,6 +6,23 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- The add-on is published on
+  [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/).
+  Firefox users install it from the store now: it survives a restart and updates itself.
+- Releases upload themselves to AMO. Pushing a `v*` tag signs the Firefox package and
+  uploads it to the pinned add-on id, together with the source archive AMO requires for
+  bundled code. The step asks AMO which version is live first and skips the upload when it
+  already has that version, so re-running a release is harmless.
+
+### Fixed
+
+- The store-publish steps in the release workflow were gated on an environment variable
+  declared on the step itself, which is not in scope when that step's `if:` is evaluated —
+  they would have been skipped even with the secrets present. The gate now reads
+  workflow-level environment values.
+
 ## [1.0.0] — 2026-09-01
 
 Every engine the extension claims to support has now been exercised on a real,
