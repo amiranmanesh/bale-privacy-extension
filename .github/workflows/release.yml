@@ -163,6 +163,33 @@ jobs:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: |
           set -euo pipefail
+
+          # AMO answers a malformed credential with "Error decoding signature",
+          # which says nothing about which half is wrong. Check the shape first
+          # and say so plainly. Nothing here prints a credential, only lengths.
+          issuer="$(printf '%s' "$AMO_JWT_ISSUER" | tr -d '[:space:]')"
+          secret="$(printf '%s' "$AMO_JWT_SECRET" | tr -d '[:space:]')"
+
+          if [ "${#issuer}" -ne "${#AMO_JWT_ISSUER}" ] || [ "${#secret}" -ne "${#AMO_JWT_SECRET}" ]; then
+            echo "::warning::Whitespace was trimmed from an AMO credential. A value piped into 'gh secret set' keeps its trailing newline; use 'gh secret set NAME --body <value>' instead."
+          fi
+
+          if [ -z "$issuer" ] || [ -z "$secret" ]; then
+            echo "::error::An AMO credential is empty. Set both under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+          # The issuer format is documented and stable; a value that fails this
+          # is almost always the secret pasted into the wrong box.
+          if ! printf '%s' "$issuer" | grep -Eq '^user:[0-9]+:[0-9]+$'; then
+            echo "::error::AMO_JWT_ISSUER should look like user:12345678:123 but is ${#issuer} characters. Check that the issuer and the secret were not swapped, then regenerate both at https://addons.mozilla.org/developers/addon/api/key/"
+            exit 1
+          fi
+
+          if ! printf '%s' "$secret" | grep -Eq '^[0-9a-f]{32,}$'; then
+            echo "::warning::AMO_JWT_SECRET is ${#secret} characters and not the usual long hex string. If the upload comes back Unauthorized, regenerate the credentials - the secret is shown only once."
+          fi
+
           # --upload-source-code is required because the shipped bundles are
           # minified by esbuild; reviewers need the readable sources.
           # --approval-timeout 0 returns as soon as the upload is accepted
@@ -173,8 +200,8 @@ jobs:
             --channel listed \
             --upload-source-code "release/bale-privacy-source.zip" \
             --approval-timeout 0 \
-            --api-key "$AMO_JWT_ISSUER" \
-            --api-secret "$AMO_JWT_SECRET"
+            --api-key "$issuer" \
+            --api-secret "$secret"
 
       - name: Publish to the Chrome Web Store
         if: steps.plan.outputs.publish == 'true' && steps.creds.outputs.chrome == 'true'
