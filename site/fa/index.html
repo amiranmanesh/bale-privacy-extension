@@ -45,7 +45,12 @@
           داده‌ای از مرورگر شما بیرون نمی‌رود.
         </p>
         <div class="cta">
-          <a class="button button--primary" href="#install">نصب</a>
+          <a
+            class="button button--primary"
+            href="https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/"
+            >افزودن به فایرفاکس</a
+          >
+          <a class="button" href="#install">مرورگرهای دیگر</a>
           <a class="button" href="https://github.com/amiranmanesh/bale-privacy-extension"
             >کد منبع</a
           >
@@ -146,10 +151,18 @@
       <section id="install" class="wrap">
         <h2>نصب</h2>
         <p class="section-lead">
-          هنوز در فروشگاه‌ها منتشر نشده. در صفحهٔ ریلیزها بستهٔ آمادهٔ نصب هست — دقیقاً همان فایلی
-          که به فروشگاه‌ها می‌رود و توسط CI از روی کد تگ‌خورده ساخته شده — پس به هیچ ابزار توسعه‌ای
-          نیاز ندارید.
+          روی فایرفاکس، افزونه را از addons.mozilla.org نصب کنید — بررسی‌شده است، با بستن مرورگر پاک
+          نمی‌شود و خودش به‌روز می‌شود. برای بقیهٔ مرورگرها، در صفحهٔ ریلیزها بستهٔ آمادهٔ نصب هست:
+          دقیقاً همان فایلی که به فروشگاه‌ها می‌رود و توسط CI از روی کد تگ‌خورده ساخته شده.
         </p>
+
+        <div class="note">
+          <strong>فایرفاکس:</strong>
+          <a href="https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/"
+            >نصب از addons.mozilla.org</a
+          >. <strong>کروم، اِج، اپرا:</strong> هنوز ارسال نشده — فعلاً از بستهٔ ریلیز پایین استفاده
+          کنید که دقیقاً همان فایلِ ارسالی به فروشگاه است.
+        </div>
 
         <div class="note">
           <strong>برای هر موتور یک بسته.</strong> کروم، اِج، بریو، اپرا، ویوالدی و آرک همگی همان
@@ -197,19 +210,27 @@
         <h3>فایرفاکس</h3>
         <ol class="steps">
           <li>
-            فایل <code>bale-privacy-&lt;version&gt;-firefox.zip</code> را از
-            <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
-              >آخرین ریلیز</a
+            صفحهٔ افزونه را در
+            <a href="https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/"
+              >addons.mozilla.org</a
             >
-            دانلود کنید.
+            باز کنید.
           </li>
-          <li>آدرس <code>about:debugging#/runtime/this-firefox</code> را باز کنید.</li>
-          <li>روی <strong>Load Temporary Add-on…</strong> بزنید و خودِ فایل ZIP را انتخاب کنید.</li>
-          <li><a href="https://web.bale.ai/chat">web.bale.ai/chat</a> را باز کنید.</li>
+          <li>روی <strong>افزودن به فایرفاکس</strong> و بعد <strong>افزودن</strong> بزنید.</li>
+          <li>
+            <a href="https://web.bale.ai/chat">web.bale.ai/chat</a> را باز کنید. محو کردن از ابتدا
+            روشن است.
+          </li>
         </ol>
         <p class="note">
-          فایرفاکس افزونه‌های موقت را با بسته شدن مرورگر حذف می‌کند، پس تا وقتی افزونه امضا و روی
-          addons.mozilla.org منتشر نشده، این کار را هر بار باید تکرار کنید.
+          اگر می‌خواهید نسخهٔ خاصی یا بیلد خودتان را امتحان کنید: فایل
+          <code>bale-privacy-&lt;version&gt;-firefox.zip</code> را از
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
+            >آخرین ریلیز</a
+          >
+          بگیرید، <code>about:debugging#/runtime/this-firefox</code> را باز کنید و از
+          <strong>Load Temporary Add-on…</strong> استفاده کنید. فایرفاکس افزونه‌های موقت را با بسته
+          شدن مرورگر حذف می‌کند، پس این کار را هر بار باید تکرار کنید.
         </p>
 
         <h3>ساخت از روی کد</h3>

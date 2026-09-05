@@ -13,6 +13,7 @@
   </p>
   <p>
     <a href="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml/badge.svg" /></a>
+    <a href="https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/"><img alt="افزونه‌های فایرفاکس" src="https://img.shields.io/amo/v/privacy-for-bale-web?label=firefox%20add-ons&color=ff7139" /></a>
     <img alt="Manifest V3" src="https://img.shields.io/badge/manifest-v3-5b5bd6" />
     <img alt="permissions" src="https://img.shields.io/badge/permissions-storage%20only-16a34a" />
     <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue" /></a>
@@ -71,8 +72,14 @@
 
 ### از فروشگاه‌ها
 
-هنوز منتشر نشده. به‌محض تأیید اولین نسخه، لینک‌ها اینجا و در
-[وب‌سایت](https://amiranmanesh.github.io/bale-privacy-extension/fa/) قرار می‌گیرد.
+**فایرفاکس — [افزودن به فایرفاکس](https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/)**
+
+روی addons.mozilla.org منتشر شده و موزیلا آن را بررسی کرده است. راه درست همین است: افزونه با
+بستن مرورگر پاک نمی‌شود و خودش به‌روز می‌شود.
+
+**کروم، اِج، اپرا** — هنوز ارسال نشده. تا آن موقع از
+[بسته‌های ریلیز](#از-روی-ریلیز-بدون-نیاز-به-ابزار-توسعه) استفاده کنید؛ دقیقاً همان فایلی است
+که به فروشگاه می‌رود.
 
 ### از روی ریلیز (بدون نیاز به ابزار توسعه)
 
@@ -96,7 +103,9 @@
 6. اختیاری: روی آیکون پازل در نوار ابزار بزنید و افزونه را pin کنید.
 7. <https://web.bale.ai/chat> را باز کنید. محو کردن از ابتدا روشن است.
 
-**فایرفاکس**
+**فایرفاکس** — به‌جای این روش، افزونه را
+[از addons.mozilla.org](https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/) نصب
+کنید. نصب دستی فقط وقتی لازم است که بخواهید نسخهٔ خاصی یا بیلد خودتان را امتحان کنید:
 
 1. فایل `bale-privacy-<version>-firefox.zip` را از
    [آخرین ریلیز](https://github.com/amiranmanesh/bale-privacy-extension/releases/latest)
@@ -105,8 +114,9 @@
 3. روی **Load Temporary Add-on…** بزنید و خودِ فایل ZIP را انتخاب کنید.
 4. <https://web.bale.ai/chat> را باز کنید.
 
-فایرفاکس افزونه‌های موقت را با بسته شدن مرورگر حذف می‌کند، پس تا وقتی افزونه امضا و روی
-addons.mozilla.org منتشر نشده، این کار را هر بار باید تکرار کنید.
+فایرفاکس افزونه‌های موقت را با بسته شدن مرورگر حذف می‌کند، پس این کار را هر بار باید تکرار
+کنید — دلیل دیگری برای این‌که نسخهٔ امضاشده را از
+[addons.mozilla.org](https://addons.mozilla.org/fa/firefox/addon/privacy-for-bale-web/) نصب کنید.
 
 ### ساخت از روی کد
 

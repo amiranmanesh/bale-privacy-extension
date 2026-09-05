@@ -44,7 +44,12 @@
           on <strong>web.bale.ai</strong>. Hover anything to read it. Nothing leaves your browser.
         </p>
         <div class="cta">
-          <a class="button button--primary" href="#install">Install</a>
+          <a
+            class="button button--primary"
+            href="https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/"
+            >Add to Firefox</a
+          >
+          <a class="button" href="#install">Other browsers</a>
           <a class="button" href="https://github.com/amiranmanesh/bale-privacy-extension"
             >Source on GitHub</a
           >
@@ -140,10 +145,18 @@
       <section id="install" class="wrap">
         <h2>Install</h2>
         <p class="section-lead">
-          Not on the stores yet. The releases page carries ready-made packages — the same artefacts
-          that go to the stores, built from the tagged source by CI — so you do not need any build
-          tools.
+          On Firefox, install it from addons.mozilla.org — it is reviewed, stays installed and
+          updates itself. Everywhere else, the releases page carries ready-made packages, the same
+          artefacts that go to the stores, built from the tagged source by CI.
         </p>
+
+        <div class="note">
+          <strong>Firefox:</strong>
+          <a href="https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/"
+            >install from addons.mozilla.org</a
+          >. <strong>Chrome, Edge, Opera:</strong> not submitted yet — use the release package
+          below, which is the same file that will go to the store.
+        </div>
 
         <div class="note">
           <strong>One package per engine.</strong> Chrome, Edge, Brave, Opera, Vivaldi and Arc all
@@ -184,18 +197,24 @@
         <h3>Firefox</h3>
         <ol class="steps">
           <li>
-            Download <code>bale-privacy-&lt;version&gt;-firefox.zip</code> from the
-            <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
-              >latest release</a
+            Open the listing on
+            <a href="https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/"
+              >addons.mozilla.org</a
             >.
           </li>
-          <li>Open <code>about:debugging#/runtime/this-firefox</code>.</li>
-          <li>Click <strong>Load Temporary Add-on…</strong> and select the ZIP file itself.</li>
-          <li>Open <a href="https://web.bale.ai/chat">web.bale.ai/chat</a>.</li>
+          <li>Click <strong>Add to Firefox</strong>, then <strong>Add</strong> to confirm.</li>
+          <li>
+            Open <a href="https://web.bale.ai/chat">web.bale.ai/chat</a>. Blurring is on by default.
+          </li>
         </ol>
         <p class="note">
-          Firefox removes temporary add-ons when it closes, so this has to be repeated each session
-          until the add-on is signed and published on addons.mozilla.org.
+          To try a specific version or a build of your own instead: download
+          <code>bale-privacy-&lt;version&gt;-firefox.zip</code> from the
+          <a href="https://github.com/amiranmanesh/bale-privacy-extension/releases/latest"
+            >latest release</a
+          >, open <code>about:debugging#/runtime/this-firefox</code> and use
+          <strong>Load Temporary Add-on…</strong>. Firefox drops temporary add-ons when it closes,
+          so that has to be repeated every session.
         </p>
 
         <h3>Build it yourself</h3>

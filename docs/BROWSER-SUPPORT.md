@@ -5,15 +5,15 @@
 Two packages cover every browser except Safari, and Safari needs a different
 kind of artefact — not a different codebase.
 
-| Browser                            | Engine   | Package                           | Verified                                                 |
-| ---------------------------------- | -------- | --------------------------------- | -------------------------------------------------------- |
-| Chrome 111+                        | Chromium | `…-chrome.zip`                    | blur, popup, options, hover, live toggling               |
-| Edge 111+                          | Chromium | `…-chrome.zip`                    | same package, same APIs                                  |
-| Brave, Opera, Vivaldi, Arc, Yandex | Chromium | `…-chrome.zip`                    | same package, same APIs                                  |
-| Firefox 121+                       | Gecko    | `…-firefox.zip`                   | blur confirmed on a live session; lint reports no errors |
-| Firefox for Android 121+           | Gecko    | `…-firefox.zip`                   | declared supported; not tested on a device               |
-| Safari 16.4+ (macOS)               | WebKit   | Xcode app, `npm run build:safari` | project builds                                           |
-| Safari (iOS/iPadOS)                | WebKit   | —                                 | not built; the converter can target it                   |
+| Browser                            | Engine   | Package                                                                              | Verified                                                 |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Chrome 111+                        | Chromium | `…-chrome.zip`                                                                       | blur, popup, options, hover, live toggling               |
+| Edge 111+                          | Chromium | `…-chrome.zip`                                                                       | same package, same APIs                                  |
+| Brave, Opera, Vivaldi, Arc, Yandex | Chromium | `…-chrome.zip`                                                                       | same package, same APIs                                  |
+| Firefox 121+                       | Gecko    | [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/) | published and reviewed; blur confirmed on a live session |
+| Firefox for Android 121+           | Gecko    | `…-firefox.zip`                                                                      | declared supported; not tested on a device               |
+| Safari 16.4+ (macOS)               | WebKit   | Xcode app, `npm run build:safari`                                                    | project builds                                           |
+| Safari (iOS/iPadOS)                | WebKit   | —                                                                                    | not built; the converter can target it                   |
 
 **A Chromium browser does not need its own package.** Chrome, Edge, Brave,
 Opera, Vivaldi, Arc and the rest run the same Manifest V3 zip unmodified. What
@@ -111,9 +111,10 @@ though it is unmaintained; nothing in the extension prevents it.
   `scripts/browser.mjs`: every category blurs, timestamps stay readable, hover
   reveals a single element, the master switch and per-category switches
   propagate to open tabs, and the settings survive a browser restart.
-- **Firefox** — `web-ext lint` reports zero errors, real Firefox installs the
-  package as a temporary add-on without complaint, and a maintainer confirmed
-  the blur on a logged-in session:
+- **Firefox** — published on addons.mozilla.org, so it has been through
+  Mozilla's own screening as well. `web-ext lint` reports zero errors, real
+  Firefox installs the package without complaint, and a maintainer confirmed the
+  blur on a logged-in session:
 
   ```bash
   npx web-ext run --source-dir dist/firefox --start-url https://web.bale.ai/chat

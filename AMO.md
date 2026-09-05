@@ -1,6 +1,11 @@
 # Firefox Add-ons (AMO) listing — Privacy for Bale Web
 
-> Last updated: 2026-09-01 · Package: `release/bale-privacy-<version>-firefox.zip`
+> **Published.** <https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/>
+> · slug `privacy-for-bale-web` · add-on id `{9699286f-8a2b-4bf9-94fa-f3b8aedb9814}`
+> — the same id pinned in `scripts/manifest.mjs`, which is what lets CI upload new
+> versions to this listing rather than creating a second one.
+>
+> Last updated: 2026-09-05 · Package: `release/bale-privacy-<version>-firefox.zip`
 >
 > The Chrome equivalent is [`CHROMEWEBSTORE.md`](CHROMEWEBSTORE.md). AMO asks a
 > different set of questions — notably the privacy policy is pasted as text rather
@@ -229,11 +234,45 @@ independent, uses original icon artwork, no Bale branding, and states in the lis
 options page and the README that it is not affiliated with or endorsed by Bale.
 ```
 
-## Version checklist
+## Publishing a new version
+
+Uploads are automated. Pushing a `v*` tag runs `.github/workflows/release.yml`, which
+builds the package, attaches it to the GitHub release, and then signs and uploads it to
+this listing with `web-ext sign --channel listed`. The workflow skips the upload when AMO
+already carries the version being released, so re-running it is harmless.
+
+Two repository secrets drive it, both from
+<https://addons.mozilla.org/developers/addon/api/key/>:
+
+| Secret           | Value                                            |
+| ---------------- | ------------------------------------------------ |
+| `AMO_JWT_ISSUER` | the JWT issuer, `user:…`                         |
+| `AMO_JWT_SECRET` | the JWT secret (shown once — regenerate if lost) |
+
+Without them the step is skipped and the release still succeeds, so a fork never fails on
+a missing credential.
+
+### What automation does not cover
+
+`web-ext sign` uploads the _package_. The listing text, screenshots, categories and
+privacy policy live in AMO's Developer Hub and are edited there by hand — this file holds
+the copy to paste. Update them when the description or the UI changes, not on every
+release.
+
+### Manual fallback
+
+```bash
+npm run verify && npm run package
+npx web-ext sign --source-dir dist/firefox --channel listed \
+  --upload-source-code release/bale-privacy-source.zip \
+  --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+```
+
+### Checklist
 
 - [ ] `npm run verify` green
-- [ ] `npm run package` — upload `release/bale-privacy-<version>-firefox.zip`
-- [ ] `addons-linter release/bale-privacy-<version>-firefox.zip` reports 0 errors
-- [ ] Source tarball attached (repository without `node_modules/`, `dist/`, `release/`)
+- [ ] `npm run package` produces `release/bale-privacy-<version>-firefox.zip`
+- [ ] `npx web-ext lint --source-dir dist/firefox` reports 0 errors
+- [ ] Source archive attached — mandatory, because the package is bundled with esbuild
 - [ ] Privacy policy text matches `docs/PRIVACY.md`
 - [ ] Screenshots regenerated if the UI changed (`node scripts/screenshots.mjs`)

@@ -16,6 +16,7 @@
   <p>
     <a href="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/ci.yml/badge.svg" /></a>
     <a href="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/pages.yml"><img alt="Pages" src="https://github.com/amiranmanesh/bale-privacy-extension/actions/workflows/pages.yml/badge.svg" /></a>
+    <a href="https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/"><img alt="Firefox Add-ons" src="https://img.shields.io/amo/v/privacy-for-bale-web?label=firefox%20add-ons&color=ff7139" /></a>
     <img alt="Manifest V3" src="https://img.shields.io/badge/manifest-v3-5b5bd6" />
     <img alt="Permissions: storage" src="https://img.shields.io/badge/permissions-storage%20only-16a34a" />
     <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue" /></a>
@@ -70,8 +71,14 @@ Details and what has actually been verified on each engine:
 
 ### From the stores
 
-Not published yet — links appear here and on the [website](https://amiranmanesh.github.io/bale-privacy-extension) once the first
-release clears review. Progress and the submission runbook live in
+**Firefox — [Add to Firefox](https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/)**
+
+Published on addons.mozilla.org and reviewed by Mozilla. This is the path to use: the add-on
+stays installed across restarts and updates itself.
+
+**Chrome, Edge, Opera** — not submitted yet. Until then, use
+[the release packages](#from-a-release-no-build-tools-needed) below; they are the same artefacts
+that go to the store. Progress and the submission runbook live in
 [the wiki](https://github.com/amiranmanesh/bale-privacy-extension/wiki/Publishing-and-Releases).
 
 ### From a release (no build tools needed)
@@ -92,15 +99,17 @@ same artefacts that go to the stores, built from the tagged source by CI.
 6. Optional: click the puzzle-piece icon in the toolbar and pin the extension.
 7. Open <https://web.bale.ai/chat>. The blur is on by default.
 
-**Firefox**
+**Firefox** — install it [from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/)
+instead. Load a release package manually only to try a specific version or a build of your own:
 
 1. Download `bale-privacy-<version>-firefox.zip` from the [latest release](https://github.com/amiranmanesh/bale-privacy-extension/releases/latest).
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Click **Load Temporary Add-on…** and select the ZIP file itself.
 4. Open <https://web.bale.ai/chat>.
 
-Firefox removes temporary add-ons when it closes, so this has to be repeated each session
-until the add-on is signed and published on addons.mozilla.org.
+Firefox removes temporary add-ons when it closes, so this has to be repeated every session —
+another reason to install the signed add-on from
+[addons.mozilla.org](https://addons.mozilla.org/firefox/addon/privacy-for-bale-web/).
 
 ### From source
 
