@@ -20,8 +20,19 @@ All notable changes to this project are documented here. The format follows
 
 - The store-publish steps in the release workflow were gated on an environment variable
   declared on the step itself, which is not in scope when that step's `if:` is evaluated —
-  they would have been skipped even with the secrets present. The gate now reads
-  workflow-level environment values.
+  they would have been skipped even with the secrets present. A presence probe now reports
+  whether each credential exists, and the publish steps gate on that.
+
+### Security
+
+- The release workflow no longer interpolates a dispatch input into a shell script. A tag
+  input is validated against a semver pattern and reaches the shell through the
+  environment, so it cannot execute as code.
+- Store credentials are scoped to the two steps that publish. They were briefly set at
+  workflow level, which put them in the environment of `npm ci` and the build, within
+  reach of a compromised dependency.
+- Publishing requires a `v*` tag again, on the manual path as well as on a tag push, so a
+  dispatch cannot ship an arbitrary branch to a store.
 
 ## [1.0.0] — 2026-09-01
 
